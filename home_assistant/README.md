@@ -3,7 +3,7 @@ Once you have the appropriate hardware to support the ESPHomeCN105 firmware, you
 
 All of the configuration needed to use these include files is done via the substition command within ESPHome YAML files. This allows for high reusability of code within the devices being created which will hopefully reduce bugs and enable the devices to behave similarly.
 
-Please note that these files are aligned to the hardware described in (PCB_assembly)[/pcb_assembly/) and specifically the use of the ESP32-C6 dev kit.  If you are using different hardware slight tweaks will be required.
+Please note that these files are aligned to the hardware described in [PCB_assembly](/pcb_assembly/) and specifically the use of the ESP32-C6 dev kit.  If you are using different hardware slight tweaks will be required.
 
 ##  Overview
 The functionality provided by the defined YAML files includes:
@@ -16,18 +16,18 @@ The functionality provided by the defined YAML files includes:
 
 There are 6 include files that break up the functionality allowing you to load those portions that you need.  These files are as follows:
 * **mitsubishi_cn105_device_base.yaml** - Required - this is the core include file that you must always load containing all of the climate device definitions. 
-* **mitsubishi_cn105_config.yaml** - Required - this contains the hardware module definitions, logging, web server definitions as well as home assistant integration
+* **mitsubishi_cn105_config.yaml** - Required - this contains the hardware module definitions, logging, web server definitions as well as home assistant integration.  Note that this file is aligned to the ESP32-c6 dev kit and would need modification to work with other boards.
 * **mitsubishi_cn105_remote_temp.yaml** -  Optional - this connects to a home assistant device that will provide temperature sensor information that will be used to set the remote temperature in the climate device. 
 * **mitsubishi_cn105_remote_temp_dual.yaml** - Optional - a more sophisticated version of mitsubishi_cn105_remote_temp.yaml that support two (2) remote sensor devices that can be setup as either a primary/backup configuration or an average of the two.  This is useful in situations in which one of the sensors is not entirely accurate but you would prefer an external temperature vs the internal sensor from the split mini (which tends to not be accurate).
-* **mitsubishi_cn105_wifi_dynamic.yaml** - Required - since WiFi is required, either the static or dynamic configuration must be included (but only one of them!).  This include file sets up for DHCP provisioning of the network address.  In many situations this is the best option.  If you have a "flat" network (i.e., home router/wifi that everything directly connects to) this will work well.
+* **mitsubishi_cn105_wifi_dynamic.yaml** - Required - since WiFi is required, either the static or dynamic configuration must be included (but only one of them!).  This include file sets up DHCP provisioning of the network address.  In many situations this is the best option.  If you have a "flat" network (i.e., home router/wifi that everything directly connects to) this will work well.
 * **mitsubishi_cn105_wifi_static.yaml** - Required - since WiFi is required, either the static or dynamic configuration must be included (but only one of them!).  This include file sets up the use of static IP address for the device - DHCP is disabled!  If you have separated your ESPHome/IoT devices into a different network (VLAN, etc.) assigning static IP addresses is by far the best approach to ensure reliable connection via the ESPHome Builder.  It will require you recording the IP addresses you have assigned to ensure that two devices don't get the same IP address (this will break things).
 
 While this looks like a lot, take a look at the examples which will demonstrate usage that is hopefully very straightforward.
 
 ## Installation
 There are two ways you can use the include files in your Home Assistant configuration:
-1. **REMOTE** - Referenced directly from the files stored in GitHub, nothing is installed locally except for the devices YAML file.  The primary advantage is nothing to install locally, just create the normal device YAML file and reference the GitHub include files.  Unless you plan on making local changes this is likely the best approach.
-2. **LOCAL** - Installed directly in Home Assistant and locally referenced within a devices YAML file.  The examples in this README are using local copies of the files.  The primary advantage to using this system is the ability to make local changes and remove the potential for GitHub updates causing backwards incompatible changes that would break your deployment.  However it requires substantially more work to deploy new updates from GitHub should they occur.
+1. **REMOTE** - Referenced directly from the files stored in GitHub, nothing is installed locally except for the device's YAML file.  The primary advantage is nothing to install locally, just create the normal device YAML file and reference the GitHub include files.  Unless you plan on making local changes this is likely the best approach.
+2. **LOCAL** - Installed directly in Home Assistant and locally referenced within a device's YAML file.  The examples in this README are using local copies of the files.  The primary advantage to using local files is the ability to make local changes that to core files.  However it requires substantially more work to deploy new updates from GitHub should they occur since you need to merge the changes together.
 
 ### Installing locally
 In order to reference the include files in your device YAML file, you need to place all of the files located at [home_assistant/common](/home_assistant/common/) into an appropriate location in Home Assistant using either the terminal or a tool such as the [File Editor Add-On](https://github.com/home-assistant/addons?tab=readme-ov-file).
