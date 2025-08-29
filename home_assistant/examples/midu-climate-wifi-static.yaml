@@ -38,19 +38,3 @@ substitutions:
 
 # Disable the web server component
 web_server: !remove
-
-#
-# Define and enable i2c sensors.  The sensors are connected to the STEMMA connector
-# on the controller board.
-#
-external_components:
-  - source: github://btomala/esphome-LM75@v1
-    components: [ lm75 ]
-
-sensor:
-  - platform: lm75
-    id: midu_guest_bedroom_temp
-    name: "Internal Temperature"
-    update_interval: 60s
-    address: 0x37
-
