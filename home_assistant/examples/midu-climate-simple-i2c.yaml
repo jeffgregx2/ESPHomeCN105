@@ -1,0 +1,53 @@
+#
+# Load the device configuration for Mitsubishi CN105 Controller.  This is a direct
+# replacement for Mitsubishi Kumo Cloud Wifi Controller
+#
+packages:
+  - !include common/mitsubishi_cn105_config.yaml
+  - !include common/mitsubishi_cn105_wifi_dynamic.yaml
+  - !include common/mitsubishi_cn105_device_base.yaml
+
+# The packages have requirements regarding substitutions that need to be answered.
+substitutions:
+  name: midu-climate-guest-bedroom
+  friendly_name: Mitsubishi Guest Bedroom
+  
+  # Wifi Setup
+  wifi_ssid: !secret wifi_iot_ssid
+  wifi_password: !secret wifi_iot_password
+
+  # Wifi Access Point Fallback
+  wifi_ap_fallback_ssid: !secret wifi_ap_fallback_ssid
+  wifi_ap_fallback_password: !secret wifi_ap_fallback_password
+
+  # Various passwords
+  api_key: !secret api_key_midu_guest_bedroom
+  ota_key: !secret ota_key_midu_guest_bedroom
+
+  # Setup web server authentication
+  # To disable the web server add the following after the substitution section:
+  #     web_server: !remove
+  ws_username: !secret web_server_username
+  ws_password: !secret web_server_password
+
+# Disable the web server component
+web_server: !remove
+
+#
+# Define and enable i2c sensors.  The sensors are connected to the STEMMA connector
+# on the controller board.
+#
+external_components:
+  - source: github://btomala/esphome-LM75@v1
+    components: [ lm75 ]
+
+sensor:
+  - platform: lm75
+    id: midu_guest_bedroom_temp
+    name: "Internal Temperature"
+    update_interval: 60s
+    address: 0x37
+    on_value:
+      then:
+        # We must publish the current temp to rt_effective_temp to take effect
+        - lambda: 'id(rts_effective_temp).publish_state(x);'

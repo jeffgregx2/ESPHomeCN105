@@ -1,0 +1,12 @@
+# Mitsubishi CN105 ESPHome - Examples
+For simplicity, all examples use the Secret facility to store the differences between devices.  Mostly these are usernames and passwords - however they can include things like wifi SSID, etc.  Since these examples are public using Secrets allows for valid values while minimizing my ability to accidentally reveal information :-)
+
+This directory provides the following examples:
+* **midu-climate-simple.yaml** - essentially the minimal amount needed to setup a Mitsubishi Split Mini using the [ESPHomeCN105 firmware](https://github.com/echavet/MitsubishiCN105ESPHome).  This will require the include files to be [installed](/home_assistant/README.md#installing-locally) on your local Home Assistant server.  No temperature sensor is provided - only the internal sensor on the split mini will be available.
+* **midu-climate-simple-git.yaml** - the same example as midu-climate-simple.yaml, except using GitHub to serve the include files instead of installing them locally.
+* **midu-climate-simple_i2c.yaml** - the simple example now leveraging an i2c temperature sensor to set the local temperature instead of a Home Assistant sensor.
+* **climate-simple-remote-temp.yaml** - the simple example with an added Home Assistant temperature sensor providing the temp to use in place of the split mini internal sensor.
+* **midu-climate-dual-sensor.yaml** - a slightly more complex example in which two (2) Home Assistant temperature sensors are providing the temp to use in place of the split mini internal sensor.  The example averages the two temp together (if they are both available, if only one is available it alone is used).
+* **midu-climate-complex-temp.yaml** - this demonstrates handling multiple temperature sensors within the device YAML exclusively adding more complex logic that decides what to do based upon the status of the split mini.
+* **midu-climate-wifi-static.yaml** - all prior examples use dynamic WIFI (i.e., DHCP) to get an IP address on your network.  This example moves to static IP addresses which is highly useful when you have multiple subnets that are firewalled from each other.  This can cause mDNS (i.e., Bonjour) to not be available and thus the communications between HA/ESPHome to not be reliable (or work).  If you are using static IP addresses is it strongly advised that you also define a domain name via the wifi_domain variable.  The default is '.local' which is aligned with mDNS and may cause discovery to still not work.
+* 

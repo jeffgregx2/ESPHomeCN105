@@ -17,8 +17,8 @@ The functionality provided by the defined YAML files includes:
 There are 6 include files that break up the functionality allowing you to load those portions that you need.  These files are as follows:
 * **mitsubishi_cn105_device_base.yaml** - Required - this is the core include file that you must always load containing all of the climate device definitions. 
 * **mitsubishi_cn105_config.yaml** - Required - this contains the hardware module definitions, logging, web server definitions as well as home assistant integration
-* **mitsubishi_cn105_remote_temp.yaml** -  Optional - this connects to a home assistant device that will provide temperature sensor information that will be used to set the remote temperature in the climate device.  The device_base include YAML contains code to ensure that the split mini is periodically updated with the current remote temperature via the CN105 protocol unless the remote temperature become unavailable.
-* **mitsubishi_cn105_remote_temp_dual.yaml** - Optional - a more sophisticated version of mitsubishi_cn105_remote_temp.yaml that support two (2) remote sensor devices that can be setup as either a primary/backup configuration or an average of the two.  This is useful in situations in which one of the sensors is not entirely accurate but you would prefer an external temperature vs the internal sensor from the split mini (which tend to not be accurate).
+* **mitsubishi_cn105_remote_temp.yaml** -  Optional - this connects to a home assistant device that will provide temperature sensor information that will be used to set the remote temperature in the climate device. 
+* **mitsubishi_cn105_remote_temp_dual.yaml** - Optional - a more sophisticated version of mitsubishi_cn105_remote_temp.yaml that support two (2) remote sensor devices that can be setup as either a primary/backup configuration or an average of the two.  This is useful in situations in which one of the sensors is not entirely accurate but you would prefer an external temperature vs the internal sensor from the split mini (which tends to not be accurate).
 * **mitsubishi_cn105_wifi_dynamic.yaml** - Required - since WiFi is required, either the static or dynamic configuration must be included (but only one of them!).  This include file sets up for DHCP provisioning of the network address.  In many situations this is the best option.  If you have a "flat" network (i.e., home router/wifi that everything directly connects to) this will work well.
 * **mitsubishi_cn105_wifi_static.yaml** - Required - since WiFi is required, either the static or dynamic configuration must be included (but only one of them!).  This include file sets up the use of static IP address for the device - DHCP is disabled!  If you have separated your ESPHome/IoT devices into a different network (VLAN, etc.) assigning static IP addresses is by far the best approach to ensure reliable connection via the ESPHome Builder.  It will require you recording the IP addresses you have assigned to ensure that two devices don't get the same IP address (this will break things).
 
@@ -26,11 +26,11 @@ While this looks like a lot, take a look at the examples which will demonstrate 
 
 ## Installation
 There are two ways you can use the include files in your Home Assistant configuration:
-1. **REMOTE** - Referenced directly from the files stored in GitHub, nothing is installed locally except for the devices YAML file.  The primary advantage are nothing to install locally, just create the normal device YAML file and reference the GitHub include files.  Unless you plan on making local changes this is likely the best approach.
+1. **REMOTE** - Referenced directly from the files stored in GitHub, nothing is installed locally except for the devices YAML file.  The primary advantage is nothing to install locally, just create the normal device YAML file and reference the GitHub include files.  Unless you plan on making local changes this is likely the best approach.
 2. **LOCAL** - Installed directly in Home Assistant and locally referenced within a devices YAML file.  The examples in this README are using local copies of the files.  The primary advantage to using this system is the ability to make local changes and remove the potential for GitHub updates causing backwards incompatible changes that would break your deployment.  However it requires substantially more work to deploy new updates from GitHub should they occur.
 
 ### Installing locally
-In order to reference the file in your device YAML file, you need to place all of the files located at [home_assistant/common](/home_assistant/common/) into an appropriate location in Home Assistant using either the terminal or a tool such as the [File Editor Add-On](https://github.com/home-assistant/addons?tab=readme-ov-file).
+In order to reference the include files in your device YAML file, you need to place all of the files located at [home_assistant/common](/home_assistant/common/) into an appropriate location in Home Assistant using either the terminal or a tool such as the [File Editor Add-On](https://github.com/home-assistant/addons?tab=readme-ov-file).
 
 It is recommended that you copy the files to homeassistant/esphome/common (creating the 'common' directory first).  Once you have uploaded the files you should see them as follows (this examples uses File Editor):
 
@@ -75,7 +75,7 @@ substitutions:
  # Disable the web server component
 web_server: !remove
 ```
-Please note the '@v1.0' indicates that you only want version 1.0.  If you are not familiar with Git, this is a "tag" that was created to mark files at a specific point in time with a name (in this case "V1.0").  If you use "@main" then you would be using the latest version available in the repository.  By specifying a specific version you reduce the chances of a breaking changes within the include files.  However you might miss an enhancement or a fix needed to maintain compatibility with the firmware and Home Assistant resulting requiring manual intervention.
+Please note the '@v1.0' indicates that you only want version 1.0.  If you are not familiar with Git, this is a "tag" that was created to mark files at a specific point in time with a name (in this case "v1.0").  If you use "@main" then you would be using the latest version available in the repository.  By specifying a specific version you reduce the chances of a breaking changes within the include files.  However you might miss an enhancement or a fix needed to maintain compatibility with the firmware and Home Assistant requiring manual intervention.
 
 ### Local include files
 The only changes necessary to move to a local directory are in the packages definition:
@@ -85,8 +85,7 @@ packages:
   - !include common/mitsubishi_cn105_wifi_dynamic.yaml
   - !include common/mitsubishi_cn105_device_base.yaml
 ```
-The directory specified much match the location you copied in the files in the [Installing Locally](#installing-locally) section.
+The directory specified must match the location you copied in the files in the [Installing Locally](#installing-locally) section.
 
 ## Detailed Examples
 Click [HERE](/home_assistant/examples/) or more detailed examples
-

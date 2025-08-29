@@ -1,0 +1,3 @@
+# Mitsubishi CN105 ESPHome Hardware - PCB
+
+Coming Soon...

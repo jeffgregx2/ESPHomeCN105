@@ -16,7 +16,6 @@
 #    rts_backup_sensor  --> The HA ID of the sensor to be used as the backup
 #    rts_average_value  --> Boolean indicating if we should average (default) or use primary/backup
 #
-
 substitutions:
     rts_average_value: 1   # Default is to average the values from the two sensors
     
@@ -110,6 +109,7 @@ script:
 
           if (isnan(result)) {
             ESP_LOGW("main", "No valid temperature sensors; remote temp update skipped.");
+            id(rts_effective_temp).publish_state(NAN);
           }
           else if (id(rts_effective_temp).state != result) {
             // Publish an update if the temp has changed
