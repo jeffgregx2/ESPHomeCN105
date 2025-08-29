@@ -1,0 +1,315 @@
+#
+# This package contains the actual definition and logic for the Mitsubishi CN105
+# Device Controller.  Currently the expectation is we are going to be connected to
+# Home Assistant and thus devices, etc. will be enabled including a remote temperature
+# device.
+#
+# This package requires the following substitutions to be defined:
+#
+#  - Identification
+#        name.                   -> ESPHome name 
+#        friendly_name           -> ESPHome friendly name
+#        hp_id                   -> Climate device ID - default hp_id
+#        hp_F_compatibility      -> Use internal table for better temp compatibility - default true
+#        hp_update_interval      -> Interval between updates - split mini dependent - default 1.5s
+#
+#  - Device Setup
+#        cn105_tx_pin            -> TX pin number for CN105 UART - default GPIO1
+#        cn105_rx_pin            -> RX pin number for CN105 UART - default GPIO2
+#        i2c_scl_pin             -> SCL pin number for i2c bus   - default GPIO22
+#        i2c_sda_pin             -> SDA pin number for i2c bus   - default GPIO21
+#        i2c_scan_bus            -> boolean to scan bus or not.  - default false
+#        status_light_ctrl_pin   -> Pin number for RMT LED Strip - default GPIO8
+#        status_light_brightness -> Whole number percentage (0-100) for led brightness - default 25
+#
+#  - Controlling constants
+#        rts_refresh_timeout.   -> number of seconds with no update to trigger rta refresh
+#  - Scripts
+#        reevaluate_remote_temp. -> Script to recalculate remote temperature.  Needed on MODE change.
+
+substitutions:
+  # Climate Device ID & control settings
+  hp_id: hp_id
+  hp_F_compatibility: true
+  hp_update_interval: 1.5s
+  
+  # HP Uart GPIO pin selection
+  cn105_tx_pin: GPIO1
+  cn105_rx_pin: GPIO2
+  i2c_scl_pin:  GPIO22
+  i2c_sda_pin:  GPIO21
+  i2c_scan_bus: false
+  
+  # Light ping & brightness level
+  status_light_ctrl_pin: GPIO8
+  status_light_brightness: 25
+  
+  # rts refresh timeout
+  rts_refresh_timeout: 300
+  
+# Retrieve mitsubishi components
+external_components:
+  - source: github://echavet/MitsubishiCN105ESPHome
+
+# Setup boot initialization
+esphome:
+  on_boot: 
+    then:
+      # Initialize the status light - red means not initialized
+      - light.turn_on:
+          id: status_led
+          brightness: ${status_light_brightness}%
+          red: 100%
+          green: 0%
+          blue: 1%
+          effect: "Heartbeat"
+
+# Define UART for CN105 interface
+uart:
+  id: HP_UART
+  baud_rate: 2400
+  tx_pin: ${cn105_tx_pin}
+  rx_pin: ${cn105_rx_pin}
+
+globals:
+  # True if HA RTS value is available, false if HA announces the value is not "unavailable"
+  - id: rts_temp_valid
+    type: bool
+    initial_value: "false"
+  - id: rts_last_change_time
+    type: long
+    initial_value: "0"
+  - id: hp_current_mode
+    type: esphome::climate::ClimateMode
+
+# Add support for i2c devices
+i2c:
+   - id: bus_a
+     sda: ${i2c_sda_pin}
+     scl: ${i2c_scl_pin}
+     scan: ${i2c_scan_bus}
+     frequency: 200kHz   # 50kHz, 100Hkz, 200kHz, 400Khz
+
+light:
+  - platform: esp32_rmt_led_strip
+    id: status_led
+    name: "Status Led"
+    internal: true
+    pin: ${status_light_ctrl_pin}
+    num_leds: 1
+    rgb_order: RGB
+    chipset: WS2812
+    default_transition_length: 0ms
+    effects:
+      - lambda:
+          name: "Heartbeat"
+          update_interval: 500ms
+          lambda: |-
+            static bool state = false;
+            static unsigned long last_toggle = 0;
+            static unsigned long on_time = 2000;
+            static unsigned long off_time = 500;
+            static unsigned long next_toggle = on_time;
+
+            if (millis() - last_toggle >= next_toggle) {
+              state = !state;
+              last_toggle = millis();
+              next_toggle = state ? on_time : off_time;
+            }
+
+            auto call = id(status_led).turn_on();
+            call.set_transition_length(0);
+            if (state) {
+              call.set_brightness(${status_light_brightness}/100.0);
+            } else {
+              call.set_brightness(0.0);
+            }
+            call.perform();
+    
+  # Calculated effective_remote_temp sensor value - the global rts_temp_valid indicates
+  # if this value is valid (i.e., not NaN, etc.) then a timer will periodically
+  # refresh the Climate device with the last known current temp.  This is 
+  # important otherwise the Mitsubishi Split Mini will revert to it's internal
+  # temp sensor which is not ideal.
+  #
+sensor:
+  - platform: template
+    name: "rts_effective_temp"
+    id: rts_effective_temp
+    entity_category: DIAGNOSTIC
+    device_class: temperature
+    state_class: measurement
+    unit_of_measurement: "°C"
+    on_value:
+      then:
+        - lambda: |-
+            ESP_LOGI("main", "Got effective temp: %.1f C", x);
+            if (!isnan(x)) {
+              ESP_LOGI("main", "Remote temperature received from HA: %.1f C", x);
+              id(${hp_id}).set_remote_temperature(x);
+              id(rts_temp_valid) = true;
+              id(rts_last_change_time) = millis();
+            } else {
+              ESP_LOGW("main", "HA reported Remote temperature 'unavailable'; skipping update");
+              id(rts_temp_valid) = false;
+            }
+
+  - platform: template
+    name: "dg_uart_connected"
+    entity_category: DIAGNOSTIC
+    accuracy_decimals: 0
+    lambda: |-
+      return (bool) id(${hp_id}).isUARTConnected_;
+    update_interval: 30s
+    on_value:
+      then:
+        - if:
+            condition:
+              lambda: 'return x == 0;'
+            then:
+              - light.turn_on:          # CN105 is offline - RED
+                  id: status_led
+                  red: 100%
+                  green: 0%
+                  blue: 0%
+                  effect: "Heartbeat"
+            else:
+              - light.turn_on:          # CN105 is online - GREEN
+                  id: status_led
+                  red: 0%
+                  green: 100%
+                  blue: 0%
+                  effect: "Heartbeat"
+
+  - platform: template
+    name: "dg_complete_cycles"
+    entity_category: DIAGNOSTIC
+    accuracy_decimals: 0
+    disabled_by_default: true
+    lambda: |-
+      return (unsigned long) id(${hp_id}).nbCompleteCycles_;
+    update_interval: 60s
+
+  - platform: template
+    name: "dg_total_cycles"
+    accuracy_decimals: 0
+    disabled_by_default: true
+    entity_category: DIAGNOSTIC
+    lambda: |-
+      return (unsigned long) id(${hp_id}).nbCycles_;
+    update_interval: 60s
+    
+  - platform: template
+    name: "dg_nb_hp_connections"
+    accuracy_decimals: 0
+    disabled_by_default: true
+    entity_category: DIAGNOSTIC
+    lambda: |-
+      return (unsigned int) id(${hp_id}).nbHeatpumpConnections_;
+    update_interval: 60s
+
+  - platform: template
+    name: "dg_complete_cycles_percent"
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    disabled_by_default: true
+    entity_category: DIAGNOSTIC
+    lambda: |-      
+      unsigned long nbCompleteCycles = id(${hp_id}).nbCompleteCycles_;
+      unsigned long nbCycles = id(${hp_id}).nbCycles_;
+      if (nbCycles == 0) {
+        return 0.0;
+      }
+      return (float) nbCompleteCycles / nbCycles * 100.0;
+    update_interval: 60s
+    
+# Handle the case when the remote sensor doesn't change and is not refreshed.  The CN105
+# device requires us to refresh the value periodically otherwise it will fallback to the
+# internal sensor (which is not ideal).  Only do this if the value is available.
+interval:
+  - interval: 30sec
+    then:
+      - if:
+          condition:
+            # If no update in 5 minutes, allow the refresh
+            lambda: 'return ((millis() - id(rts_last_change_time)) > (${rts_refresh_timeout} * 1000));'
+          then:
+            lambda: |-
+              if (id(rts_temp_valid)) {
+                ESP_LOGI("main", "Refreshing remote temp due to inactivity: %.1f C", id(rts_effective_temp).state);
+                id(${hp_id}).set_remote_temperature(id(rts_effective_temp).state);
+                id(rts_last_change_time) = millis();
+              } else {
+                ESP_LOGW("main", "Skipping refresh: HA temp is unavailable");
+              }
+#
+# Creates the Climate device used to control the CN105 interface associated with
+# a Mitsubishi Split-Mini system.
+#
+climate: 
+  - platform: cn105
+    id: ${hp_id}
+    name: "${friendly_name}"
+    icon: mdi:heat-pump
+    visual:
+      min_temperature: 10 # Adjust to your unit's min temp. SmartSet units can go to 10C for heating
+      max_temperature: 31
+      temperature_step:
+        target_temperature: 1
+        current_temperature: 0.5
+    # Fahrenheit compatibility mode - uses Mitsubishi's "custom" unit conversions, set to
+    # "true" for better support of Fahrenheit units in HomeAssistant
+    fahrenheit_compatibility: ${hp_F_compatibility}
+    # Timeout and communication settings
+    remote_temperature_timeout: 60min
+    update_interval: ${hp_update_interval}
+    debounce_delay : 100ms
+    # Various optional sensors, not all sensors are supported by all heatpumps
+    outside_air_temperature_sensor:
+      name: Outside Air Temp
+      disabled_by_default: false
+    vertical_vane_select:
+      name: Vertical Vane
+      disabled_by_default: false
+    horizontal_vane_select:
+      name: Horizontal Vane
+      disabled_by_default: false
+    isee_sensor:
+      name: ISEE Sensor
+      disabled_by_default: true
+    input_power_sensor:
+      name: Input Power
+      disabled_by_default: true
+    kwh_sensor:
+      name: Energy Usage
+      disabled_by_default: true
+    compressor_frequency_sensor:
+      name: Compressor Frequency
+      entity_category: diagnostic
+      disabled_by_default: true
+    stage_sensor:
+      name: Stage
+      entity_category: diagnostic
+      disabled_by_default: true
+    sub_mode_sensor:
+      name: Sub Mode
+      entity_category: diagnostic
+      disabled_by_default: true
+    auto_sub_mode_sensor:
+      name: Auto Sub Mode
+      entity_category: diagnostic
+      disabled_by_default: true
+    runtime_hours_sensor:
+      name: Runtime Hours
+      entity_category: diagnostic
+      disabled_by_default: true
+    on_state:
+      then:
+        - lambda: |-
+            // For various reasons subaction changes cause this to fire repeatedly,
+            // so ensure we only fire once per top level state change.
+            if (id(hp_current_mode) != x.mode) {
+              id(hp_current_mode) = x.mode;
+              id(climate_mode_changed)->execute();
+            }
+

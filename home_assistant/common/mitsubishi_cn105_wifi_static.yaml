@@ -1,0 +1,34 @@
+#
+# This package contains the Wifi configuration setup using static IP address.  For simple
+# network configuration the dynamic configuration works well.  However if you have subnets, 
+# etc. then the static configuration with a defined wifi_domain is generally better.
+#
+# This package requires the following substitutions to be defined:
+#
+#  - Wifi Setup
+#        wifi_static_ip      -> static ip address
+#        wifi_gateway_ip.    -> gateway ip address
+#        wifi_subnet.        -> IPv4 subnet mask (e.g., 255.255.255.0)
+#        wifi_ssid           -> SSID of wifi network to use
+#        wifi_password       -> Password for wifi network 
+#        wifi_domain         -> Default domain name to use, allows non ".local" domains
+#
+#  - Wifi Access Point Fallback
+#        wifi_ap_fallback_ssid      -> Fallback Access Point SSID
+#        wifi_ap_fallback_password. -> Fallbcak Access Point Password
+
+wifi:
+  ssid: ${wifi_ssid}
+  password: ${wifi_password}
+  domain: ${wifi_domain}
+
+  manual_ip:
+    static_ip: ${wifi_static_ip}
+    gateway: ${wifi_gateway_ip}
+    subnet: ${wifi_subnet}
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: ${wifi_ap_fallback_ssid}
+    password: ${wifi_ap_fallback_password}
+

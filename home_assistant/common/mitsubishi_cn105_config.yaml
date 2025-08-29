@@ -1,0 +1,109 @@
+#
+# This package contains the majority of the ESPHome and HA integration configuration.
+# It depends upon a number of substitutions being supplied by the top level configuration.
+# This package requires the following to be defined:
+#
+#  - Identification
+#        name.               -> ESPHome name 
+#        friendly_name       -> ESPHome friendly name
+#        remote_temp_sensor. -> HA device name to retrieve current temperature
+#
+#  - Various passwords
+#        api_key             -> HA API Key
+#        ota_key             -> Over the Air upgrade key
+#        ws_username         -> Web Server Auth username
+#        ws_password         -> Web Server Auth password
+#
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32-c6-devkitc-1
+  flash_size: 4MB
+  framework:
+    type: esp-idf
+    #version: 5.4.2
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: ${api_key}
+
+ota:
+  - platform: esphome
+    password: ${ota_key}
+
+# Enable Web server - only use for debug. To disable place the following in the top
+# level configuration:
+# 
+#     web_server: !remove
+#
+web_server:
+  port: 80
+  ota: false
+  version: 2
+  auth:
+    username: ${ws_username}
+    password: ${ws_password}
+
+captive_portal:
+
+# Sync time with Home Assistant.
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+# Text sensors with general information.
+text_sensor:
+  # Expose ESPHome version as sensor.
+  - platform: version
+    name: ${name} ESPHome Version
+  # Expose WiFi information as sensors.
+  - platform: wifi_info
+    ip_address:
+      name: ${name} IP
+    ssid:
+      name: ${name} SSID
+    bssid:
+      name: ${name} BSSID
+
+# Sensors with general information.
+sensor:
+  # Uptime sensor.
+  - platform: uptime
+    name: ${name} Uptime
+
+  # WiFi Signal sensor.
+  - platform: wifi_signal
+    name: ${name} WiFi Signal
+    update_interval: 60s
+    
+# Enable logging
+logger:
+  level: DEBUG
+  hardware_uart: USB_SERIAL_JTAG
+
+  logs:
+    ACK: WARN
+    chkSum : WARN
+    climate: INFO
+    CN105: WARN
+    CN105Climate: WARN
+    CONTROL_WANTED_SETTINGS: WARN
+    CYCLE: WARN
+    Decoder : WARN
+    EVT_SETS : WARN
+    Header : WARN
+    light: WARN
+    MQTT : WARN
+    READ : WARN
+    REMOTE_TEMP: WARN
+    sensor: WARN
+    SETTINGS : WARN
+    STATUS : WARN
+    Update-ACK: WARN
+    WIFI : DEBUG
+    WRITE : WARN
+    WRITE_SETTINGS : WARN
+

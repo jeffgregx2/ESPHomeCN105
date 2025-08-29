@@ -1,0 +1,41 @@
+#
+# Load the device configuration for Mitsubishi CN105 Controller.  This is a direct
+# replacement for Mitsubishi Kumo Cloud Wifi Controller
+#
+packages:
+  - !include common/mitsubishi_cn105_config.yaml
+  - !include common/mitsubishi_cn105_wifi_static.yaml
+  - !include common/mitsubishi_cn105_remote_temp.yaml
+  - !include common/mitsubishi_cn105_device_base.yaml
+
+# The packages have requirements regarding substitutions that need to be answered.
+substitutions:
+  name: midu-climate-guest-bedroom
+  friendly_name: Mitsubishi Guest Bedroom
+  rts_primary_sensor: sensor.guest_bedroom_thermostat_electric_air_temperature
+  
+  # Wifi Setup - static configuration
+  wifi_static_ip: 192.168.220.55
+  wifi_gateway_ip: 192.168.220.1
+  wifi_subnet: 255.255.255.0
+  wifi_ssid: !secret wifi_iot_ssid
+  wifi_password: !secret wifi_iot_password
+  wifi_domain: !secret wifi_domain
+
+  # Wifi Access Point Fallback
+  wifi_ap_fallback_ssid: !secret fallback_ssid_midu_guest_bedroom
+  wifi_ap_fallback_password: !secret fallback_password_midu_guest_bedroom
+
+  # Various passwords
+  api_key: !secret api_key_midu_guest_bedroom
+  ota_key: !secret ota_key_midu_guest_bedroom
+
+  # Setup web server authentication
+  # To disable the web server add the following after the substitution section:
+  #     web_server: !remove
+  ws_username: !secret web_server_username
+  ws_password: !secret web_server_password
+
+# Disable the web server component
+web_server: !remove
+

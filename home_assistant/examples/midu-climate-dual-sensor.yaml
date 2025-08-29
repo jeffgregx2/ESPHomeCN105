@@ -1,0 +1,173 @@
+#
+# Load the device configuration for Mitsubishi CN105 Controller.  This is a direct
+# replacement for Mitsubishi Kumo Cloud Wifi Controller.
+#
+# This configuration demonstrates how to explicitly define temperature sensors in this
+# configuration file instead of via the include files.  This allows you to take complete
+# control over the logic and do things like averaging of temperatures between sensors.
+# For example, in this case the remote_temp_sensor is a Z-wave line voltage thermostat
+# that is unfortuntely directly opposite the split-mini wall unit.  This causes air travel
+# over the temperature sensor that, when the fan is on higher settings, can misread the 
+# actual room temperature.  The other sensor is battery powered and, while accurate, is
+# not guaranteed to be present.  As such we want logic to ensure we select the "best"
+# temperature from those that are available and influenced by the current split-mini
+# status.
+#
+packages:
+  - !include common/mitsubishi_cn105_config.yaml
+  - !include common/mitsubishi_cn105_wifi_static.yaml
+  - !include common/mitsubishi_cn105_device_base.yaml
+
+# The packages have requirements regarding substitutions that need to be answered.
+substitutions:
+  name: midu-climate-living-room
+  friendly_name: Mitsubishi Living Room
+  remote_temp_sensor: sensor.living_room_thermostat_electric_air_temperature
+  kitchen_temp_sensor: sensor.z2m_kitchen_temp_humidity_temperature
+
+  # Wifi Setup - static configuration
+  wifi_static_ip: 192.168.220.57
+  wifi_gateway_ip: 192.168.220.1
+  wifi_subnet: 255.255.255.0
+  wifi_ssid: !secret wifi_iot_ssid
+  wifi_password: !secret wifi_iot_password
+  wifi_domain: !secret wifi_domain
+
+  # Wifi Access Point Fallback
+  wifi_ap_fallback_ssid: !secret fallback_ssid_midu_living_room
+  wifi_ap_fallback_password: !secret fallback_password_midu_living_room
+
+  # Various passwords
+  api_key: !secret api_key_midu_living_room
+  ota_key: !secret ota_key_midu_living_room
+
+  # Setup web server authentication
+  # To disable the web server add the following after the substitution section:
+  #     web_server: !remove
+  ws_username: !secret web_server_username
+  ws_password: !secret web_server_password
+
+# Disable the web server component
+web_server: !remove
+
+# Define the Home Assistant devices that we will be using to retreive remote
+# temperature readings.  Currently a remote temp sensor is required mostly due
+# to the fact that the iSee sensor in the Mitsubishi unit is incredibly inaccurate.
+# The original Kumo cloud implementation deployed with bluetooth temp/humidity
+# sensors which dramatically improved things.
+#
+# However, for flexibility the ID for this device and the ID used by the climate
+# device are defined by substitutions allowing reconfiguration if necessary.
+#
+sensor:
+  # Room Temperature Sensor
+  - platform: homeassistant
+    name: "Remote Temperature Sensor"
+    id: sensor_cool
+    entity_id: ${remote_temp_sensor}
+    internal: true
+    disabled_by_default: true
+    device_class: temperature
+    state_class: measurement
+    unit_of_measurement: "°C"
+    filters:
+      # We currently use Celcius for internal temp management
+      - lambda: return (x - 32) * (5.0/9.0);
+      - clamp: # Limits values to range accepted by Mitsubishi units
+          min_value: 1
+          max_value: 40
+          ignore_out_of_range: true
+      - throttle: 5s
+    on_value:
+      then:
+        - script.execute: reevaluate_remote_temp
+            
+  #
+  # Retrieve the additional sensor data that we will use to calculate the average
+  # temp in the room.  This is partly to allow for backups (some of the sensors are
+  # battery powered) and partly due to the unfortunate location of the main thermostat
+  # which is directly in front of the split mini system yielding poorer quality data.
+  #
+  - platform: homeassistant
+    entity_id: ${kitchen_temp_sensor}
+    id: sensor_heat
+    name: Kitchen Zigbee Temp sensor
+    internal: true
+    disabled_by_default: false
+    device_class: temperature
+    state_class: measurement
+    unit_of_measurement: "°C"
+    filters:
+      # We currently use Celcius for internal temp management
+      - lambda: return (x - 32) * (5.0/9.0);
+      - clamp: # Limits values to range accepted by Mitsubishi units
+          min_value: 1
+          max_value: 40
+          ignore_out_of_range: true
+      - throttle: 5s
+    on_value:
+      then:
+        - script.execute: reevaluate_remote_temp
+
+script:
+  # Helper script called when the climate mode changes.
+  - id: climate_mode_changed
+    then:
+      - lambda: |-
+          ESP_LOGI("main", "Climate mode change: %d", id(${hp_id}).mode);
+      - script.execute: reevaluate_remote_temp
+
+  # Helper script to calculate the "correct" temperature to use based upon availability
+  # and sensor setting.
+  - id: reevaluate_remote_temp
+    then:
+      - lambda: |-
+          auto  mode    = id(${hp_id}).mode;
+          float cool    = id(sensor_cool).state;
+          float heat    = id(sensor_heat).state;
+          bool  cool_ok = !isnan(cool);
+          bool  heat_ok = !isnan(heat);
+          float result  = NAN;
+
+          ESP_LOGI("main", "Re-evaluating remote temp: cool=%.1f, cool_ok=%d, heat=%.1f, heat_ok=%d, mode=%d", cool, cool_ok, heat, heat_ok, mode);
+
+          switch (mode) {
+            // For most modes, favor the cool thermostat over heat
+            default:
+              if (cool_ok) {
+                result = cool;
+              } else if (heat_ok) {
+                result = heat;
+              }
+              break;
+
+            case climate::CLIMATE_MODE_HEAT:
+              // Favor heat over cool
+              if (heat_ok) {
+                result = heat;
+              } else if (cool_ok) {
+                result = cool;
+              }
+              break;
+
+            case climate::CLIMATE_MODE_AUTO:
+            case climate::CLIMATE_MODE_HEAT_COOL:  // AUTO - use average
+              // In auto mode safer to average the sensors as the default, otherwise favor cool over heat.
+              if (cool_ok && heat_ok) {
+                result = (cool + heat) / 2.0;
+              } else if (cool_ok) {
+                result = cool;
+              } else if (heat_ok) {
+                result = heat;
+              }
+              break;
+          }
+
+          if (isnan(result)) {
+            ESP_LOGW("main", "No valid temperature sensors; remote temp update skipped.");
+          }
+          else if (id(rts_effective_temp).state != result) {
+            // Publish an update if the temp has changed
+            id(rts_effective_temp).publish_state(result);
+          }
+
