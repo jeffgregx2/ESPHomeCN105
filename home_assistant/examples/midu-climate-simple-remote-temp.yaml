@@ -1,20 +1,23 @@
 #
 # Load the device configuration for Mitsubishi CN105 Controller.  This is a direct
-# replacement for Mitsubishi Kumo Cloud Wifi Controller (Model PAC-USWHS002-WF-1)
+# replacement for Mitsubishi Kumo Cloud Wifi Controller
 #
 packages:
   - !include common/mitsubishi_cn105_config.yaml
   - !include common/mitsubishi_cn105_wifi_dynamic.yaml
+  - !include common/mitsubishi_cn105_remote_temp.yaml
   - !include common/mitsubishi_cn105_device_base.yaml
 
 # The packages have requirements regarding substitutions that need to be answered.
 substitutions:
   name: midu-climate-guest-bedroom
   friendly_name: Mitsubishi Guest Bedroom
+  rts_primary_sensor: sensor.guest_bedroom_thermostat_electric_air_temperature
   
   # Wifi Setup - static configuration
   wifi_ssid: !secret wifi_iot_ssid
   wifi_password: !secret wifi_iot_password
+  wifi_domain: !secret wifi_domain
 
   # Wifi Access Point Fallback
   wifi_ap_fallback_ssid: !secret fallback_ssid_midu_guest_bedroom

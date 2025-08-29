@@ -3,9 +3,9 @@
 # replacement for Mitsubishi Kumo Cloud Wifi Controller (Model PAC-USWHS002-WF-1)
 #
 packages:
-  - !include common/mitsubishi_cn105_config.yaml
-  - !include common/mitsubishi_cn105_wifi_dynamic.yaml
-  - !include common/mitsubishi_cn105_device_base.yaml
+  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_config.yaml@main
+  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_wifi_dynamic.yaml@main
+  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_device_base.yaml@main
 
 # The packages have requirements regarding substitutions that need to be answered.
 substitutions:
