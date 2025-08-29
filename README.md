@@ -7,6 +7,6 @@ However, in order to use the ESPHome approach, appropriate hardware needs to be 
 
 To this end I have designed a PCB board using an ESP32-C6 devkit and associated 3D printed case that is the same size of the module it is replacing as well as plug compatible.  If you already have the PAC-USWHS002-WF-2 module installed, you can simply unplug that module and plug this new module into its place.  In addition, this new module exposes an i2c port via a [STEMMA](https://learn.adafruit.com/introducing-adafruit-stemma-qt/what-is-stemma) compatible connector.   For more information on the PCB design, 3D case, etc. and how to create your own copy of the board please see [PCB_assembly](/pcb_assembly/).
 
-![PCB Board described above](/images/PCB_v1.1.png)
+![PCB Board described above](/images/PCB_V1.1-with-case.png)
 
 In addition, I have included ESPHome include files that allow assembling thermostat devices for this device in Home Assistant far easier and repeatable - very helpful if you have multiple devices.  The result allows for YAML files that only contain substitutions and secret references.  The files and additional documentation is available [HERE](/home_assistant/).
