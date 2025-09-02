@@ -43,7 +43,7 @@ Alternatively, you can use whatever fabricator you want and build the board your
 | 1 | I2C/Stemma | [S4B-PH-K-S](https://www.digikey.com/en/products/detail/jst-sales-america-inc/S4B-PH-K-S/926628) |
 | 1 | Wavemaker ESP32-C6-Zero | [ESP32-C6-Zero-M](https://www.amazon.com/dp/B0D1K19W2Y?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_1) |
 | 1 | 1A 32V Fuse | [MFU0805FF01000P500](https://www.digikey.com/en/products/detail/vishay-beyschlag-draloric-bc-components/MFU0805FF01000P500/1202619) |
-| 7 | RES 10K OHM 1% 1/8W | [CRGCQ0805F10K](https://www.digikey.com/en/products/detail/te-connectivity-passive-product/CRGCQ0805F10K/8576363) |
+| 6 | RES 10K OHM 1% 1/8W | [CRGCQ0805F10K](https://www.digikey.com/en/products/detail/te-connectivity-passive-product/CRGCQ0805F10K/8576363) |
 | 2 | MOSFET N-CH 50V 220MA | [BSS138](https://www.digikey.com/en/products/detail/onsemi/BSS138/244210) |
 
 ## Final Notes
