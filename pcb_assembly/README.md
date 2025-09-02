@@ -21,7 +21,7 @@ It is definitely possible to create a smaller footprint project (likely 40% smal
 ## Schematics
 With this in mind I created the following schematic:
 
-[PCB Schematic Diagram](/images/PCB-schematic.png)
+![PCB Schematic Diagram](/images/PCB-schematic.png)
 
 Clearly this is a relatively simple design.  The most important elements are the inclusion of level shifters to convert from 5v <-> 3.3v ensuring that the CPU and CN105 voltages are appropriately accommodated.
 
@@ -29,7 +29,7 @@ Clearly this is a relatively simple design.  The most important elements are the
 
 The next step is to design a 2-layer PCB that supports the above schematic.  Some care was taken to minimize the interference with the WiFi antenna.
 
-[PCB Layout Diagram](/images/PCB-layout.png)
+![PCB Layout Diagram](/images/PCB-layout.png)
 
 ## Fabrication
 Fabrication can be accomplished using whichever fabricator you wish.  Given the very small number of boards I wanted (5), I chose [PCBWay](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_Microcontroller_kicad_pcb_b5b72995.html).  This link will simplify creation of the V1.1 project board if you want to make one yourself. 
