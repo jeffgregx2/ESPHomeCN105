@@ -27,7 +27,7 @@ While this looks like a lot, take a look at the examples which will demonstrate 
 ## Installation
 There are two ways you can use the include files in your Home Assistant configuration:
 1. **REMOTE** - Referenced directly from the files stored in GitHub, nothing is installed locally except for the device's YAML file.  The primary advantage is nothing to install locally, just create the normal device YAML file and reference the GitHub include files.  Unless you plan on making local changes this is likely the best approach.
-2. **LOCAL** - Installed directly in Home Assistant and locally referenced within a device's YAML file.  The examples in this README are using local copies of the files.  The primary advantage to using local files is the ability to make local changes that to core files.  However it requires substantially more work to deploy new updates from GitHub should they occur since you need to merge the changes together.
+2. **LOCAL** - Installed directly in Home Assistant and locally referenced within a device's YAML file.  The examples in this README are using local copies of the files.  The primary advantage to using local files is the ability to make local changes to core files.  However it requires substantially more work to deploy new updates from GitHub should they occur since you need to merge the changes together.
 
 ### Installing locally
 In order to reference the include files in your device YAML file, you need to place all of the files located at [home_assistant/common](/home_assistant/common/) into an appropriate location in Home Assistant using either the terminal or a tool such as the [File Editor Add-On](https://github.com/home-assistant/addons?tab=readme-ov-file).
@@ -89,3 +89,4 @@ The directory specified must match the location you copied in the files in the [
 
 ## Detailed Examples
 Click [HERE](/home_assistant/examples/) or more detailed examples
+

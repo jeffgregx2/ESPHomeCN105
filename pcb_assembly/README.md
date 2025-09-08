@@ -46,6 +46,13 @@ Alternatively, you can use whatever fabricator you want and build the board your
 | 6 | RES 10K OHM 1% 1/8W | [CRGCQ0805F10K](https://www.digikey.com/en/products/detail/te-connectivity-passive-product/CRGCQ0805F10K/8576363) |
 | 2 | MOSFET N-CH 50V 220MA | [BSS138](https://www.digikey.com/en/products/detail/onsemi/BSS138/244210) |
 
+## Case
+To complete the project I created a 3D printed case that is as close to the same dimensions as the original PAC wifi module.  It is a tooless design that simply snaps together (it does require a small screwdriver or really strong fingernails to disassemble).  
+
+![PCB in Case](/images/PCB_V1.1-with-case.png)
+
+The case was printed using white PLA using quality settings (0.2mm, 15% infill, no supports, etc.).  While there is a bit of play in the PCB restraint system, I did aim for precision to have the top/bottom snap to fit, etc.    You can find the STL files for the top & bottom of the case in the [3d_case](/pcb_assembly/3d_case) directory.  If there is sufficient interest I can place them on printables.
+
 ## Final Notes
 
 This project could be done with larger components, there is sufficient space.  However I wanted the opportunity to learn surface mount components and chose 805 size as a compromise.  It would also enable installation of some or all of the components at fabrication time if that was ever interesting to someone.
