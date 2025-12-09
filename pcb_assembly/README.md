@@ -32,9 +32,13 @@ The next step is to design a 2-layer PCB that supports the above schematic.  Som
 ![PCB Layout Diagram](/images/PCB-layout.png)
 
 ## Fabrication
-Fabrication can be accomplished using whichever fabricator you wish.  Given the very small number of boards I wanted (5), I chose [PCBWay](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_Microcontroller_kicad_pcb_b5b72995.html).  This link will simplify creation of the V1.1 project board if you want to make one yourself. 
+PCB Manufacturing can be accomplished using whichever fabricator you wish.  For convenience, a [PCBWay](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_Microcontroller_kicad_pcb_b5b72995.html)  
+project has been created that makes creating the PCB basically one click at PCBWay.  You can also allow download of all gerber files, etc. in case you want to use a different vendor. 
 
-Alternatively, you can use whatever fabricator you want and build the board yourself using the following [Gerber files](/pcb_assembly/gerber).
+A copy of all files also exists here: [Gerber files](/pcb_assembly/gerber).  These should be identical to the ones at PCBWay - they are insurance in case
+something happens to the PCBWay community site.  If you notice any discrepancy please let me know.
+
+The supplied gerber files should be portable to any manufacturer not just PCBWay.  Please ensure you are using V1.1 (or later if one exists) - V1.0 had a tracing issue on the I2C port.
 
 ### Parts lists
 |Qty|Part Desc.|Link|
