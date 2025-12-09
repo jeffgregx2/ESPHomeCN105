@@ -38,7 +38,14 @@ project has been created that makes creating the PCB basically one click at PCBW
 A copy of all files also exists here: [Gerber files](/pcb_assembly/gerber).  These should be identical to the ones at PCBWay - they are insurance in case
 something happens to the PCBWay community site.  If you notice any discrepancy please let me know.
 
-The supplied gerber files should be portable to any manufacturer not just PCBWay.  Please ensure you are using V1.1 (or later if one exists) - V1.0 had a tracing issue on the I2C port.
+The supplied gerber files should be portable to any manufacturer not just PCBWay.
+
+Version History
+- V1.0 - 06/01/2025 - Initial Version
+- V1.1 - 07/12/2025 - Fix issue in which i2c connector is reversed
+- V1.2 - 12/09/2025 - Fix issue in which SDA/SDL need to be pulled high NOT low 
+
+Please ensure you are using the latest version of the gerber files.
 
 ### Parts lists
 |Qty|Part Desc.|Link|
