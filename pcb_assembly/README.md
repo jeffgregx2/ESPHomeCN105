@@ -21,7 +21,7 @@ It is definitely possible to create a smaller footprint project (likely 40% smal
 ## Schematics
 With this in mind I created the following schematic:
 
-![PCB Schematic Diagram](/images/PCB-schematic.png)
+![PCB Schematic Diagram](/images/PCB-V1.2-schematic.png)
 
 Clearly this is a relatively simple design.  The most important elements are the inclusion of level shifters to convert from 5v <-> 3.3v ensuring that the CPU and CN105 voltages are appropriately accommodated.
 
@@ -29,10 +29,10 @@ Clearly this is a relatively simple design.  The most important elements are the
 
 The next step is to design a 2-layer PCB that supports the above schematic.  Some care was taken to minimize the interference with the WiFi antenna.
 
-![PCB Layout Diagram](/images/PCB-layout.png)
+![PCB Layout Diagram](/images/PCB-V1.2-layout.png)
 
 ## Fabrication
-PCB Manufacturing can be accomplished using whichever fabricator you wish.  For convenience, a [PCBWay](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_Microcontroller_kicad_pcb_b5b72995.html)  
+PCB Manufacturing can be accomplished using whichever fabricator you wish.  For convenience, a [PCBWay](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_Microcontroller_kicad_pcb_b5b72995.html) 
 project has been created that makes creating the PCB basically one click at PCBWay.  You can also allow download of all gerber files, etc. in case you want to use a different vendor. 
 
 A copy of all files also exists here: [Gerber files](/pcb_assembly/gerber).  These should be identical to the ones at PCBWay - they are insurance in case
