@@ -7,7 +7,7 @@ The other reason I created this project is I had never built any type of PCB-lev
 ## Features
 During the design of my module I wanted the following features:
 
- - Plug compatible with the cable provided by Mitsubishi when using the PAC-USWHS002-WF-2 wifi module.  It must be possible to simply unplug the PAC module and plug in this replacement module with no other changes.
+ - Plug compatible with the cable provided by Mitsubishi when using the PAC-USWHS002-WF-1 wifi module.  It must be possible to simply unplug the PAC module and plug in this replacement module with no other changes.
  - Low heat generation - thus selection of 5v instead of 12v to avoid the added heat generation converting from 12v to 5v/3.3v.
  - Low power usage - since we don't know the actual power available on the 12v/5v power pins on the CN105 connector the goal is to keep the average/max power level as low as possible.
  - Modern hardware - leverage the most modern CPU hardware with low power usage.
