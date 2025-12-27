@@ -1,3 +1,4 @@
+
 # Mitsubishi CN105 ESPHome Hardware - PCB
 
 The purpose of this project was to provide a production level microcontroller capable of running the ESPHome firmware controlling the Mitsubishi spit-mini heat pumps.  It was important that the hardware be robust and is expected to run for the life of the split-mini system.  A breadboard or other approach didn't work for me.
@@ -38,12 +39,12 @@ Mitsubishi has released multiple PAC modules over the past few years compatible 
 <html><table>
 <tr><td>
 <b>PAC-USWHS002-WF-1</b><br>
-![Single connector view](/images/WF-1/WF-1-Front.png)<br>
-Note that the WF-1 has a single connector JST XA 2.5mm pin spacing
+<img src="/images/WF-1/WF-1-Front.png" alt="Single connector view"><br>
+Note that the WF-1 has a single connector using JST XA 2.5mm pin spacing
 </td>
 <td>
 <b>PAC-USWHS002-WF-2</b><br>
-![Dual connector view](/images/WF-2/WF-2-Front.png)<br>
+<img src="/images/WF-2/WF-2-Front.png" alt="Dual connector view"><br>
 The WF-2 has dual connectors using JST PA 2.0mm pin spacing
 </td></tr>
 </table>
@@ -52,5 +53,5 @@ It is important to note that the two modules do NOT use the same sized connector
 
 ## Moving Ahead
 For instructions on how to build a version of this project compatible with your model click on the model number:
-- ![PAC-USWHS002-WF-1](/pcb_assembly/WF-1)
-- ![PAC-USWHS002-WF-2](/pcb_assembly/WF-2)
+- [PAC-USWHS002-WF-1](/pcb_assembly/WF-1)
+- [PAC-USWHS002-WF-2](/pcb_assembly/WF-2)
