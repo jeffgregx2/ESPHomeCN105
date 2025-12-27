@@ -1,7 +1,7 @@
 ## Instructions for PAC-USWHS002-WF-1 compatible module
 
 A reminder of the module:
-<html><table style="height:100px"><tr>
+<html><table><tr>
   <td><img src="/images/WF-1/WF-1-Label.png" alt="Label View"></td>
   <td><img src="/images/WF-1/WF-1-Front.png" alt="Front View"></td>
   <td><img src="/images/WF-1/WF-1-Top.png" alt="Top View"></td>
