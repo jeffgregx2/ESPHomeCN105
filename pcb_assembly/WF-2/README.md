@@ -2,12 +2,12 @@
 
 A reminder of the module:
 <html><table style="height:100px"><tr>
-  <td>![WF-1 Label View](/images/WF-2/WF-2-Label.png)</td>
-  <td>![WF-1 Label View](/images/WF-2/WF-2-Front.png)</td>
-  <td>![WF-1 Label View](/images/WF-2/WF-2-Top.png)</td>
+  <td><img src="/images/WF-2/WF-2-Label.png" alt="Label View"></td>
+  <td><img src="/images/WF-2/WF-2-Front.png" alt="Front View"></td>
+  <td><img src="/images/WF-2/WF-2-Top.png" alt="Top View"></td>
 </tr></table></html>  
 
-Remember the connector for the WF-2 is not compatible with the WF-1 without an adapter.  Please ensure you select the correct version of the module.
+Remember the CN105 wire harness provided with the WF-2 is not compatible with the connector on the WF-1 without an adapter cable.  Please ensure you select the correct version of this project to ensure compatibility.
 
 ## Fabrication
 PCB Manufacturing can be accomplished using whichever fabricator you wish.  For convenience, a [PCBWay](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_WF-2-Compatible.html) 

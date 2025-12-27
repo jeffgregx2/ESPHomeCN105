@@ -2,10 +2,12 @@
 
 A reminder of the module:
 <html><table style="height:100px"><tr>
-  <td>![WF-1 Label View](/images/WF-1/WF-1-Label.png)</td>
-  <td>![WF-1 Label View](/images/WF-1/WF-1-Front.png)</td>
-  <td>![WF-1 Label View](/images/WF-1/WF-1-Top.png)</td>
+  <td><img src="/images/WF-1/WF-1-Label.png" alt="Label View"></td>
+  <td><img src="/images/WF-1/WF-1-Front.png" alt="Front View"></td>
+  <td><img src="/images/WF-1/WF-1-Top.png" alt="Top View"></td>
 </tr></table></html>  
+
+Remember the CN105 wire harness provided with the WF-1 is not compatible with the connector on the WF-2 without an adapter cable.  Please ensure you select the correct version of this project to ensure compatibility.
 
 ## Fabrication
 PCB Manufacturing can be accomplished using whichever fabricator you wish.  For convenience, a [PCBWay](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_Microcontroller_kicad_pcb_b5b72995.html) 
@@ -43,4 +45,3 @@ The case was printed using white PLA using quality settings (0.2mm, 15% infill, 
 ## Final Notes
 
 This project could be done with larger components, there is sufficient space.  However I wanted the opportunity to learn surface mount components and chose 805 size as a compromise.  It would also enable installation of some or all of the components at fabrication time if that was ever interesting to someone.
-
