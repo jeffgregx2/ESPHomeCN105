@@ -7,7 +7,7 @@ The other reason I created this project is I had never built any type of PCB-lev
 ## Features
 During the design of my module I wanted the following features:
 
- - Plug compatible with the cable provided by Mitsubishi when using the PAC-USWHS002-WF-1 wifi module.  It must be possible to simply unplug the PAC module and plug in this replacement module with no other changes.
+ - Plug compatible with the cable provided by Mitsubishi when using the PAC-USWHS002-WF-1 & WF-2 wifi modules.  It must be possible to simply unplug the PAC module and plug in this replacement module with no other changes.
  - Low heat generation - thus selection of 5v instead of 12v to avoid the added heat generation converting from 12v to 5v/3.3v.
  - Low power usage - since we don't know the actual power available on the 12v/5v power pins on the CN105 connector the goal is to keep the average/max power level as low as possible.
  - Modern hardware - leverage the most modern CPU hardware with low power usage.
@@ -21,7 +21,7 @@ It is definitely possible to create a smaller footprint project (likely 40% smal
 ## Schematics
 With this in mind I created the following schematic:
 
-![PCB Schematic Diagram](/images/PCB-V1.2-schematic.png)
+![PCB Schematic Diagram](/images/WF-1/PCB-V1.2-schematic.png)
 
 Clearly this is a relatively simple design.  The most important elements are the inclusion of level shifters to convert from 5v <-> 3.3v ensuring that the CPU and CN105 voltages are appropriately accommodated.
 
@@ -29,42 +29,28 @@ Clearly this is a relatively simple design.  The most important elements are the
 
 The next step is to design a 2-layer PCB that supports the above schematic.  Some care was taken to minimize the interference with the WiFi antenna.
 
-![PCB Layout Diagram](/images/PCB-V1.2-layout.png)
+![PCB Layout Diagram](/images/WF-1/PCB-V1.2-layout.png)
 
-## Fabrication
-PCB Manufacturing can be accomplished using whichever fabricator you wish.  For convenience, a [PCBWay](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_Microcontroller_kicad_pcb_b5b72995.html) 
-project has been created that makes creating the PCB basically one click at PCBWay.  You can also allow download of all gerber files, etc. in case you want to use a different vendor. 
+## Model Differences
 
-A copy of all files also exists here: [Gerber files](/pcb_assembly/gerber).  These should be identical to the ones at PCBWay - they are insurance in case
-something happens to the PCBWay community site.  If you notice any discrepancy please let me know.
+Mitsubishi has released multiple PAC modules over the past few years compatible with the Mitsubishi Kumo Cloud smart control system for their ductless mini-split HVAC systems.   The last two released versions as as follows:
 
-The supplied gerber files should be portable to any manufacturer not just PCBWay.
+<html><table>
+<tr><td>
+<b>PAC-USWHS002-WF-1</b><br>
+![Single connector view](/images/WF-1/WF-1-Front.png)<br>
+Note that the WF-1 has a single connector JST XA 2.5mm pin spacing
+</td>
+<td>
+<b>PAC-USWHS002-WF-2</b><br>
+![Dual connector view](/images/WF-2/WF-2-Front.png)<br>
+The WF-2 has dual connectors using JST PA 2.0mm pin spacing
+</td></tr>
+</table>
+</html>
+It is important to note that the two modules do NOT use the same sized connector and thus the cables for them are not directly compatible (without an adapter).  If you wish to use this project confirm which version you need by looking at the module number on the PAC module and/or confirming with the connectors on the module.  For more photos showing the differences click ![here](/pcb_assembly/WF-differences.md).
 
-Version History
-- V1.0 - 06/01/2025 - Initial Version
-- V1.1 - 07/12/2025 - Fix issue in which i2c connector is reversed
-- V1.2 - 12/09/2025 - Fix issue in which SDA/SDL need to be pulled high NOT low 
-
-Please ensure you are using the latest version of the gerber files.
-
-### Parts lists
-|Qty|Part Desc.|Link|
-|--|--|--|
-| 1 | CN105 Connector | [S05B-XASK-1](https://www.digikey.com/en/products/detail/jst-sales-america-inc/S05B-XASK-1/9951644) |
-| 1 | I2C/Stemma | [S4B-PH-K-S](https://www.digikey.com/en/products/detail/jst-sales-america-inc/S4B-PH-K-S/926628) |
-| 1 | Wavemaker ESP32-C6-Zero | [ESP32-C6-Zero-M](https://www.amazon.com/dp/B0D1K19W2Y?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_1) |
-| 1 | 1A 32V Fuse | [MFU0805FF01000P500](https://www.digikey.com/en/products/detail/vishay-beyschlag-draloric-bc-components/MFU0805FF01000P500/1202619) |
-| 6 | RES 10K OHM 1% 1/8W | [CRGCQ0805F10K](https://www.digikey.com/en/products/detail/te-connectivity-passive-product/CRGCQ0805F10K/8576363) |
-| 2 | MOSFET N-CH 50V 220MA | [BSS138](https://www.digikey.com/en/products/detail/onsemi/BSS138/244210) |
-
-## Case
-To complete the project I created a 3D printed case that is as close to the same dimensions as the original PAC wifi module.  It is a tooless design that simply snaps together (it does require a small screwdriver or really strong fingernails to disassemble).  
-
-![PCB in Case](/images/Case-compare-front.png)
-
-The case was printed using white PLA using quality settings (0.2mm, 15% infill, no supports, etc.).  While there is a bit of play in the PCB restraint system, I did aim for precision to have the top/bottom snap to fit, etc.    You can find the STL files for the top & bottom of the case in the [3d_case](/pcb_assembly/3d_case) directory.  If there is sufficient interest I can place them on printables.
-
-## Final Notes
-
-This project could be done with larger components, there is sufficient space.  However I wanted the opportunity to learn surface mount components and chose 805 size as a compromise.  It would also enable installation of some or all of the components at fabrication time if that was ever interesting to someone.
-
+## Moving Ahead
+For instructions on how to build a version of this project compatible with your model click on the model number:
+- ![PAC-USWHS002-WF-1](/pcb_assembly/WF-1)
+- ![PAC-USWHS002-WF-2](/pcb_assembly/WF-2)
