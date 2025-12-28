@@ -34,7 +34,7 @@ The next step is to design a 2-layer PCB that supports the above schematic.  Som
 
 ## Model Differences
 
-Mitsubishi has released multiple PAC modules over the past few years compatible with the Mitsubishi Kumo Cloud smart control system for their ductless mini-split HVAC systems.   The last two released versions as as follows:
+Mitsubishi has released multiple PAC modules over the past few years compatible with the Mitsubishi Kumo Cloud smart control system for their ductless mini-split HVAC systems.   The last two released versions are as follows:
 
 <html><table>
 <tr><td>
@@ -49,7 +49,7 @@ The WF-2 has dual connectors - JST PA 2.0mm pin spacing
 </td></tr>
 </table>
 </html>
-It is important to note that the two modules do NOT use the same sized connector and thus the cables for them are not directly compatible (without an adapter).  If you wish to use this project confirm which version you need by looking at the module number on the PAC module and/or confirming with the connectors on the module.  For more photos showing the differences click ![here](/pcb_assembly/WF-differences.md).
+It is important to note that the two modules do NOT use the same sized connector and thus the cables for them are not directly compatible (without an adapter).  If you wish to use this project confirm which version you need by looking at the module number on the PAC module and/or confirming with the connectors on the module.  For more photos showing the differences click [here](/pcb_assembly/WF-differences.md).
 
 ## Moving Ahead
 For instructions on how to build a version of this project compatible with your model click on the model number:

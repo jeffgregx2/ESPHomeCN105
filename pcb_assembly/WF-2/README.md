@@ -2,9 +2,9 @@
 
 A reminder of the module:
 <html><table><tr>
-  <td><img src="/images/WF-2/WF-2-Label.png" alt="Label View"></td>
-  <td><img src="/images/WF-2/WF-2-Front.png" alt="Front View"></td>
-  <td><img src="/images/WF-2/WF-2-Top.png" alt="Top View"></td>
+  <td><img src="/images/WF-2/WF-2-Label.png" height="640" alt="Label View"></td>
+  <td><img src="/images/WF-2/WF-2-Front.png" height="640" alt="Front View"></td>
+  <td><img src="/images/WF-2/WF-2-Top.png"   height="640" alt="Top View"></td>
 </tr></table></html>  
 
 Remember the CN105 wire harness provided with the WF-2 is not compatible with the connector on the WF-1 without an adapter cable.  Please ensure you select the correct version of this project to ensure compatibility.
@@ -22,7 +22,7 @@ Version History
 - V1.0 - 06/01/2025 - Initial Version
 - V1.1 - 07/12/2025 - Fix issue in which i2c connector is reversed
 - V1.2 - 12/09/2025 - Fix issue in which SDA/SDL need to be pulled high NOT low
-- V1.3 - 12/27/2025 - Fork of WF-1 board to change connector to JST PA
+- V1.3 - 12/27/2025 - Fork of WF-1 board to change connector to JST PA 2.0mm spacing
 
 Please ensure you are using the latest version of the gerber files.
 

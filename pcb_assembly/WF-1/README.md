@@ -2,9 +2,9 @@
 
 A reminder of the module:
 <html><table><tr>
-  <td><img src="/images/WF-1/WF-1-Label.png" alt="Label View"></td>
-  <td><img src="/images/WF-1/WF-1-Front.png" alt="Front View"></td>
-  <td><img src="/images/WF-1/WF-1-Top.png" alt="Top View"></td>
+  <td><img src="/images/WF-1/WF-1-Label.png" height="640" alt="Label View"></td>
+  <td><img src="/images/WF-1/WF-1-Front.png" height="640" alt="Front View"></td>
+  <td><img src="/images/WF-1/WF-1-Top.png"   height="640" alt="Top View"></td>
 </tr></table></html>  
 
 Remember the CN105 wire harness provided with the WF-1 is not compatible with the connector on the WF-2 without an adapter cable.  Please ensure you select the correct version of this project to ensure compatibility.
