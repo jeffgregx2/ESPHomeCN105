@@ -22,6 +22,7 @@ Version History
 - V1.0 - 06/01/2025 - Initial Version
 - V1.1 - 07/12/2025 - Fix issue in which i2c connector is reversed
 - V1.2 - 12/09/2025 - Fix issue in which SDA/SDL need to be pulled high NOT low 
+- V1.3 - 12/27/2025 - Slight tweak to trace routing to stay in sync with WF-2, no real changes
 
 Please ensure you are using the latest version of the gerber files.
 
@@ -34,6 +35,10 @@ Please ensure you are using the latest version of the gerber files.
 | 1 | 1A 32V Fuse | [MFU0805FF01000P500](https://www.digikey.com/en/products/detail/vishay-beyschlag-draloric-bc-components/MFU0805FF01000P500/1202619) |
 | 6 | RES 10K OHM 1% 1/8W | [CRGCQ0805F10K](https://www.digikey.com/en/products/detail/te-connectivity-passive-product/CRGCQ0805F10K/8576363) |
 | 2 | MOSFET N-CH 50V 220MA | [BSS138](https://www.digikey.com/en/products/detail/onsemi/BSS138/244210) |
+
+The resulting assembled PCB should look like the following:
+
+![WF-1 Assembled](/images/WF-1/WF-1-PCB-V1.3.png)
 
 ## Case
 To complete the project I created a 3D printed case that is as close to the same dimensions as the original PAC wifi module.  It is a tooless design that simply snaps together (it does require a small screwdriver or really strong fingernails to disassemble).  

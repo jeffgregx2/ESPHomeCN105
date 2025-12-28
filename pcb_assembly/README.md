@@ -30,7 +30,7 @@ Clearly this is a relatively simple design.  The most important elements are the
 
 The next step is to design a 2-layer PCB that supports the above schematic.  Some care was taken to minimize the interference with the WiFi antenna.
 
-![PCB Layout Diagram](/images/WF-1/PCB-V1.2-layout.png)
+![PCB Layout Diagram](/images/WF-1/PCB-V1.3-layout.png)
 
 ## Model Differences
 
@@ -40,12 +40,12 @@ Mitsubishi has released multiple PAC modules over the past few years compatible 
 <tr><td>
 <b>PAC-USWHS002-WF-1</b><br>
 <img src="/images/WF-1/WF-1-Front.png" alt="Single connector view"><br>
-Note that the WF-1 has a single connector using JST XA 2.5mm pin spacing
+Note that the WF-1 has a single connector - JST XA 2.5mm pin spacing
 </td>
 <td>
 <b>PAC-USWHS002-WF-2</b><br>
 <img src="/images/WF-2/WF-2-Front.png" alt="Dual connector view"><br>
-The WF-2 has dual connectors using JST PA 2.0mm pin spacing
+The WF-2 has dual connectors - JST PA 2.0mm pin spacing
 </td></tr>
 </table>
 </html>

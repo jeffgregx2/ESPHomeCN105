@@ -19,7 +19,10 @@ something happens to the PCBWay community site.  If you notice any discrepancy p
 The supplied gerber files should be portable to any manufacturer not just PCBWay.
 
 Version History
-- V1.0 - 12/27/2025 - Initial Version
+- V1.0 - 06/01/2025 - Initial Version
+- V1.1 - 07/12/2025 - Fix issue in which i2c connector is reversed
+- V1.2 - 12/09/2025 - Fix issue in which SDA/SDL need to be pulled high NOT low
+- V1.3 - 12/27/2025 - Fork of WF-1 board to change connector to JST PA
 
 Please ensure you are using the latest version of the gerber files.
 
@@ -33,6 +36,10 @@ Please ensure you are using the latest version of the gerber files.
 | 6 | RES 10K OHM 1% 1/8W | [CRGCQ0805F10K](https://www.digikey.com/en/products/detail/te-connectivity-passive-product/CRGCQ0805F10K/8576363) |
 | 2 | MOSFET N-CH 50V 220MA | [BSS138](https://www.digikey.com/en/products/detail/onsemi/BSS138/244210) |
 
+The resulting assembled PCB should look like the following:
+
+![WF-2 Assembled](/images/WF-2/WF-2-PCB-V1.3.png)
+
 ## Case
 To complete the project I created a 3D printed case that is as close to the same dimensions as the original PAC wifi module.  It is a tooless design that simply snaps together (it does require a small screwdriver or really strong fingernails to disassemble).  
 
@@ -43,4 +50,3 @@ The case was printed using white PLA using quality settings (0.2mm, 15% infill, 
 ## Final Notes
 
 This project could be done with larger components, there is sufficient space.  However I wanted the opportunity to learn surface mount components and chose 805 size as a compromise.  It would also enable installation of some or all of the components at fabrication time if that was ever interesting to someone.
-
