@@ -7,8 +7,8 @@
 # This package requires the following substitutions to be defined:
 #
 #  - Identification
-#        name.                   -> ESPHome name 
-#        friendly_name           -> ESPHome friendly name
+#        name                    -> ESPHome name 
+#        hp_name                 -> Climate name to use
 #        hp_id                   -> Climate device ID - default hp_id
 #        hp_F_compatibility      -> Use internal table for better temp compatibility - default true
 #        hp_update_interval      -> Interval between updates - split mini dependent - default 1.5s
@@ -30,6 +30,7 @@
 substitutions:
   # Climate Device ID & control settings
   hp_id: hp_id
+  hp_name: None
   hp_F_compatibility: true
   hp_update_interval: 1.5s
   
@@ -249,7 +250,7 @@ interval:
 climate: 
   - platform: cn105
     id: ${hp_id}
-    name: "${friendly_name}"
+    name: "${hp_name}"
     icon: mdi:heat-pump
     visual:
       min_temperature: 10 # Adjust to your unit's min temp. SmartSet units can go to 10C for heating
