@@ -102,8 +102,8 @@ logger:
     sensor: WARN
     SETTINGS : WARN
     STATUS : WARN
+    TEMP_SENSOR: WARN
     Update-ACK: WARN
     WIFI : DEBUG
     WRITE : WARN
     WRITE_SETTINGS : WARN
-
