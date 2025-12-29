@@ -1,3 +1,4 @@
+
 ## Instructions for PAC-USWHS002-WF-1 compatible module
 
 A reminder of the module:
@@ -7,11 +8,11 @@ A reminder of the module:
   <td><img src="/images/WF-1/WF-1-Top.png"   height="640" alt="Top View"></td>
 </tr></table></html>  
 
-Remember the CN105 wire harness provided with the WF-1 is not compatible with the connector on the WF-2 without an adapter cable.  Please ensure you select the correct version of this project to ensure compatibility.
+Remember the CN105 wire harness provided with the WF-1 is not compatible with the connector on the WF-2 without an adapter cable.  Please ensure you select the correct version of this project to ensure connector compatibility.
 
 ## Fabrication
 PCB Manufacturing can be accomplished using whichever fabricator you wish.  For convenience, a [PCBWay](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_Microcontroller_kicad_pcb_b5b72995.html) 
-project has been created that makes creating the PCB basically one click at PCBWay.  You can also allow download of all gerber files, etc. in case you want to use a different vendor. 
+project has been created that makes creating the PCB basically one click using PCBWay as the fabricator.   This option allows you to either create PCBs that you assemble using the parts below, or have the boards fully assembled so you just program and plugin.  You can also allow download of all gerber files, etc. in case you want to use a different vendor. 
 
 A copy of all files also exists here: [Gerber files](/pcb_assembly/WF-1/gerber).  These should be identical to the ones at PCBWay - they are insurance in case
 something happens to the PCBWay community site.  If you notice any discrepancy please let me know.
