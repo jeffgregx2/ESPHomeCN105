@@ -14,13 +14,17 @@ The functionality provided by the defined YAML files includes:
 * i2c bus initialization to allow i2c sensors to be installed and used
 * Various diagnostic information reported to Home Assistant
 
-There are 6 include files that break up the functionality allowing you to load those portions that you need.  These files are as follows:
+There are multiple include files that break up the functionality allowing you to load those portions that you need.  These files are as follows:
 * **mitsubishi_cn105_device_base.yaml** - Required - this is the core include file that you must always load containing all of the climate device definitions. 
 * **mitsubishi_cn105_config.yaml** - Required - this contains the hardware module definitions, logging, web server definitions as well as home assistant integration.  Note that this file is aligned to the ESP32-c6 dev kit and would need modification to work with other boards.
-* **mitsubishi_cn105_remote_temp.yaml** -  Optional - this connects to a home assistant device that will provide temperature sensor information that will be used to set the remote temperature in the climate device. 
-* **mitsubishi_cn105_remote_temp_dual.yaml** - Optional - a more sophisticated version of mitsubishi_cn105_remote_temp.yaml that support two (2) remote sensor devices that can be setup as either a primary/backup configuration or an average of the two.  This is useful in situations in which one of the sensors is not entirely accurate but you would prefer an external temperature vs the internal sensor from the split mini (which tends to not be accurate).
-* **mitsubishi_cn105_wifi_dynamic.yaml** - Required - since WiFi is required, either the static or dynamic configuration must be included (but only one of them!).  This include file sets up DHCP provisioning of the network address.  In many situations this is the best option.  If you have a "flat" network (i.e., home router/wifi that everything directly connects to) this will work well.
-* **mitsubishi_cn105_wifi_static.yaml** - Required - since WiFi is required, either the static or dynamic configuration must be included (but only one of them!).  This include file sets up the use of static IP address for the device - DHCP is disabled!  If you have separated your ESPHome/IoT devices into a different network (VLAN, etc.) assigning static IP addresses is by far the best approach to ensure reliable connection via the ESPHome Builder.  It will require you recording the IP addresses you have assigned to ensure that two devices don't get the same IP address (this will break things).
+* **One of the following:**
+	* **mitsubishi_cn105_remote_temp.yaml** -  this connects to a home assistant device that will provide temperature sensor information that will be used to set the remote temperature in the climate device. 
+	* **mitsubishi_cn105_remote_temp_dual.yaml** - a more sophisticated version of mitsubishi_cn105_remote_temp.yaml that support two (2) remote sensor devices that can be setup as either a primary/backup configuration or an average of the two.  This is useful in situations in which one of the sensors is not entirely accurate but you would prefer an external temperature vs the internal sensor from the split mini (which tends to not be accurate).
+	* **mitsubishi_cn105_remote_temp_none.yaml** - indicates that no remote temperature device will be used.
+* **One of the following:**
+   Since WiFi is required, either the static or dynamic configuration must be included (but only one of them!).
+	* **mitsubishi_cn105_wifi_dynamic.yaml** - This include file sets up DHCP provisioning of the network address.  In many situations this is the best option.  If you have a "flat" network (i.e., home router/wifi that everything directly connects to) this will work well.
+	* **mitsubishi_cn105_wifi_static.yaml** - This include file sets up the use of static IP address for the device - DHCP is disabled!  If you have separated your ESPHome/IoT devices into a different network (VLAN, etc.) assigning static IP addresses is by far the best approach to ensure reliable connection via the ESPHome Builder.  It will require you recording the IP addresses you have assigned to ensure that two devices don't get the same IP address (this will break things).
 
 While this looks like a lot, take a look at the examples which will demonstrate usage that is hopefully very straightforward.
 
@@ -42,12 +46,13 @@ In the simplest of cases, you can define a climate device with no remote sensors
 ```
 #
 # Load the device configuration for Mitsubishi CN105 Controller.  This is a direct
-# replacement for Mitsubishi Kumo Cloud Wifi Controller (Model PAC-USWHS002-WF-1)
+# replacement for Mitsubishi Kumo Cloud Wifi Controller (Model PAC-USWHS002-WF-1/WF-2)
 #
 packages:
-  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_config.yaml@v1.0
-  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_wifi_dynamic.yaml@v1.0
-  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_device_base.yaml@v1.0
+  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_config.yaml@v1.1
+  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_wifi_dynamic.yaml@v1.1
+  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_remote_temp_none.yaml@v1.1
+  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_device_base.yaml@v1.1
 
 # The packages have requirements regarding substitutions that need to be answered.
 substitutions:
@@ -75,7 +80,7 @@ substitutions:
  # Disable the web server component
 web_server: !remove
 ```
-Please note the '@v1.0' indicates that you only want version 1.0.  If you are not familiar with Git, this is a "tag" that was created to mark files at a specific point in time with a name (in this case "v1.0").  If you use "@main" then you would be using the latest version available in the repository.  By specifying a specific version you reduce the chances of a breaking changes within the include files.  However you might miss an enhancement or a fix needed to maintain compatibility with the firmware and Home Assistant requiring manual intervention.
+Please note the '@v1.1' indicates that you only want version 1.1.  If you are not familiar with Git, this is a "tag" that was created to mark files at a specific point in time with a name (in this case "v1.1").  If you use "@main" then you would be using the latest version available in the repository.  By specifying a specific version you reduce the chances of breaking changes within the include files.  However you might miss an enhancement or a fix needed to maintain compatibility with the ESPHome and Home Assistant requiring manual intervention.
 
 ### Local include files
 The only changes necessary to move to a local directory are in the packages definition:
@@ -83,10 +88,10 @@ The only changes necessary to move to a local directory are in the packages defi
 packages:
   - !include common/mitsubishi_cn105_config.yaml
   - !include common/mitsubishi_cn105_wifi_dynamic.yaml
+  - !include common/mitsubishi_cn105_remote_temp_none.yaml
   - !include common/mitsubishi_cn105_device_base.yaml
 ```
 The directory specified must match the location you copied in the files in the [Installing Locally](#installing-locally) section.
 
 ## Detailed Examples
 Click [HERE](/home_assistant/examples/) or more detailed examples
-

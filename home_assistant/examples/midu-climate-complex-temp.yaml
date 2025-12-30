@@ -31,6 +31,10 @@ packages:
   - !include common/mitsubishi_cn105_wifi_dynamic.yaml
   - !include common/mitsubishi_cn105_device_base.yaml
 
+  # Please note that no remote_temp.yaml file was loaded.  Instead we are explicitly defining
+  # the functionality below (specifically the climate_mode_changed script).  Failure to do so 
+  # would result in compilation errors.
+ 
 # The packages have requirements regarding substitutions that need to be answered.
 substitutions:
   name: midu-climate-living-room
