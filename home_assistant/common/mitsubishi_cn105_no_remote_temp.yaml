@@ -1,0 +1,13 @@
+# This module is used when no remote temperature device is present.  It basically works 
+# around limitations in ESPHome in which build time compile errors cannot be avoided if
+# entities (scripts, devices, etc). are not defined.   So this module essentially 
+# creates a no-op script to enable build time compilation.
+#
+
+script:
+  # Helper script called when the climate mode changes.
+  - id: climate_mode_changed
+    then:
+      - lambda: |-
+          ESP_LOGI("main", "Climate mode change: %d", id(${hp_id}).mode);
+

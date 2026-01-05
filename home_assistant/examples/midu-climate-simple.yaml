@@ -5,6 +5,7 @@
 packages:
   - !include common/mitsubishi_cn105_config.yaml
   - !include common/mitsubishi_cn105_wifi_dynamic.yaml
+  - !include common/mitsubishi_cn105_remote_temp_none.yaml
   - !include common/mitsubishi_cn105_device_base.yaml
 
 # The packages have requirements regarding substitutions that need to be answered.

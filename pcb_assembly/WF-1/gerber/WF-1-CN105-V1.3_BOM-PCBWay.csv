@@ -1,0 +1,7 @@
+﻿Designator,Quantity,Value,Footprint,Package,MPN,DNP,Mount_Type,Description,Manufacturer,Model,PCBWay_Part_Num
+F1,1,Fuse,Fuse_0805_2012Metric_Pad1.15x1.40mm_HandSolder,,,,smt,Fuse,Vishay,MFU0805FF01000P500,MFU0805FF01000P500
+J1,1,CN105,JST_XA_S05B-XASK-1_1x05_P2.50mm_Horizontal,,,,tht,"Generic connector, single row, 01x05, script generated",JST,S05B-XASK-1,S05B-XASK-1(LF)(SN)
+J2,1,i2C,JST_PH_S4B-PH-K_1x04_P2.00mm_Horizontal,,,,tht,JST PH 4-pin edge connector,JST,S4B-PH-K-S,S4B-PH-K-S(LF)(SN)
+"Q1, Q2",2,BSS138,SOT-23,,,,smt,"50V Vds, 0.22A Id, N-Channel MOSFET, SOT-23",Onsemi,BSS138,BSS138CT-ND
+"R1, R2, R3, R4, R5, R6",6,10k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,,,,smt,Resistor,TE Connectivity,CRGCQ0805F10K,A129761CT-ND
+U1,1,ESP32-C6-Zero,Waveshare-ESP32-C6-Zero,,,,tht,,Waveshare,ESP32-C6-Zero,ESP32-C6-Zero-M
