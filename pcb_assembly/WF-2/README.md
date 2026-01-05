@@ -11,7 +11,9 @@ A reminder of the module:
 Remember the CN105 wire harness provided with the WF-2 is not compatible with the connector on the WF-1 without an adapter cable.  Please ensure you select the correct version of this project to ensure connector compatibility.
 
 ## Fabrication
-PCB Manufacturing can be accomplished using whichever fabricator you wish.  For convenience, a [PCBWay](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_WF-2-Compatible.html) 
+<html><span style="color:red; font-weight:bold;">PCB QUALIFICATION UNDERWAY<BR><ul><li>THIS BOARD HAS NOT YET BEEN FULLY TESTED<LI>PLEASE WAIT BEFORE FABRICATING THIS PCB<LI>EXPECTED COMPLETION: 02-15-2026</UL></span></html>
+
+PCB Manufacturing can be accomplished using whichever fabricator you wish.  For convenience, a [PCBWay](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_Microcontroller_PAC_USWHS002_WF_2_plug_compatible_8670e686.html) 
 project has been created that makes creating the PCB basically one click using PCBWay as the fabricator.   This option allows you to either create PCBs that you assemble using the parts below, or have the boards fully assembled so you just program and plugin.  You can also allow download of all gerber files, etc. in case you want to use a different vendor. 
 
 A copy of all files also exists here: [Gerber files](/pcb_assembly/WF-2/gerber).  These should be identical to the ones at PCBWay - they are insurance in case
