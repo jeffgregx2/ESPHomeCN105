@@ -1,0 +1,227 @@
+#
+# Standalone test harness for validating the PCB board created by this Git repository.  This tester is
+# setup to allow using the connector (labeled CN105) the split mini wiring harness will connect to 
+# to a USB UART that also provides 5v of power.  The parts used include:
+#
+#   - CP2102 USB-C to TTL Serial Adapter - https://www.amazon.com/dp/B0D78HB32T
+#   - JST PA to Dupont connectors        - https://www.amazon.com/dp/B0DJT6D67S    <-- for WF-2
+#   - JST XA (will need Dupont conn.)    - https://www.amazon.com/dp/B0B3MVRWGZ    <-- for WF-1
+#   - HTU21D-F Temp & Humidity           - https://www.adafruit.com/product/1899
+#   - STEMMA to QT cable                 - https://www.adafruit.com/product/4424
+#
+# When installed on the Mitsubishi CN105 ESPHome Hardware Microcontroller it will change it to a controller
+# that expects an HTU21D i2c temp/humidity sensor (connected to i2c port) and the above serial port connected
+# to the CN105 port.  Using a computer to connect to the USB UART controller you will be able to see output 
+# from the microcontroller and issue commands to cause the temp/humidity from the i2c temp sensor to be displayed.
+#
+# This allows for full testing of all of the hardware on thhe microcontroller.  Upon successful testing of the
+# microcontroller reprogramming to the real firmware should provide high confidence it will work as expected.
+#
+# WARNING - DO NOT POWER PCB MICROCONTROLLER via USB and CN105 AT THE SAME TIME!!!!
+#
+#     The ESP32-C6-Zero module used by this project does not support simultaneous use of the USB port
+#     and the CN105 port.  If you attempt to do this two different sources of power will be provided
+#     that might harm both this microcontroller as well as the devices attached to it.
+#
+# How to wire (pin numbers):
+#                                     CN105
+#         USB Serial Adapter     Microcontroller
+#         ------------------     ------------------
+#         1 - 5V                 1 - (12v unused)
+#         2 - (3.3V unused)      2 - GND
+#         3 - TX                 3 - 5V
+#         4 - RX                 4 - TX
+#         5 - GND                5 - RX
+#
+#     Wiring Diagram (USB Serial Adapter <--> CN105):
+#         1 -------------------> 3
+#         3 -------------------> 5
+#         4 -------------------> 4
+#         5 -------------------> 2
+#
+# How to use:
+#    - Build and install the firmware via ESPHome Builder (+ New Device) via a USB-C cable (ensure CN105 is disconnected!!)
+#    - Once the firmware is flashed validated you can via the Log Wirelessly
+#    - Disconnect the USB-C cable and attach the USB Serial Adapter via the CN105 connector/harness created above
+#    - The system should boot and a USB tty device will show up on the computer the USB Serial Adapter is attached to
+#      (note that you will need to install USB device drivers for the serial adapter to work correctly)
+#    - Connect to the USB serial adapter from a computer.
+#        - Mac (OSX) - "screen /dev/tty.usbserial-0001 9600"
+#        - Windows - You will need software like Putty and you'll need to determine what the COM port is via Device Manager
+#    - The CN105 is configured as:
+#        9600 baud, 1 stop bit, NO parity
+#
+#    - Once connected it will work as follows:
+#        CMD   RESPONSE
+#        ---   ----------------------------------------
+#              CN105 TEST HARNESS READY
+#              Commands: t = temperature, h = humidity
+#
+#        t     Temperature: 20.24 C
+#        h     Humidity: 21.55 %
+#
+#      where CMD is the letter you type on the keyboard.  Only the header is printed until you manually enter a CMD.
+#
+substitutions:
+  wifi_ssid:     !secret wifi_iot_ssid
+  wifi_password: !secret wifi_iot_password
+
+  # This test harness is setup for static IP address.  If you want to revert to dynamic IP (i.e., DHCP)
+  # simply comment out the "manual_ip:" block in the wifi section of the configuration.
+  wifi_static_ip: 192.168.120.99
+  wifi_gateway:   192.168.120.1
+  wifi_subnet:    255.255.255.0
+
+esphome:
+  name: cn105-tester
+  friendly_name: CN105-Tester
+  on_boot: 
+    priority: -100
+    then:
+      - uart.write: "\x1b[2J\x1b[HCN105 TEST HARNESS READY\r\n"
+      - uart.write: "Commands: t = temperature, h = humidity\r\n\r\n"
+
+esp32:
+  board: esp32-c6-devkitc-1
+  flash_size: 4MB
+  framework:
+    type: esp-idf
+    sdkconfig_options:
+      CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG: n
+      CONFIG_ESP_CONSOLE_UART: n
+
+# Enable logging
+logger:
+  level: DEBUG
+  hardware_uart: USB_SERIAL_JTAG
+  baud_rate: 0
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret api_key_cn105_tester
+
+ota:
+  - platform: esphome
+    password: !secret ota_key_cn105_tester
+
+wifi:
+  ssid: !secret wifi_iot_ssid
+  password: !secret wifi_iot_password
+  domain: !secret wifi_iot_domain
+
+  manual_ip:
+    # This needs to b
+    static_ip: 192.168.120.99
+    gateway: 192.168.120.1
+    subnet: 255.255.255.0
+
+interval:
+  - interval: 50ms
+    then:
+      - lambda: |-
+          int avail = id(serial_tester).available();
+          if (avail <= 0) {
+            return;
+          }
+
+          if (avail > 1) {
+            ESP_LOGI("UART", "DRAINING: RX available: %d bytes", avail);
+
+            while (id(serial_tester).available()) {
+              uint8_t c;
+              id(serial_tester).read_byte(&c);
+
+              // Print hex + ASCII (if printable)
+              if (isprint(c)) {
+                ESP_LOGI("UART", "  0x%02X ('%c')", c, c);
+              } else {
+                ESP_LOGI("UART", "  0x%02X (.)", c);
+              }
+            }
+          }
+      - lambda: |-
+
+          //ESP_LOGI("UART", "RX available: %d", id(serial_tester).available());
+
+          uint8_t c;
+          if (!id(serial_tester).available()) {
+            return;
+          }
+
+          id(serial_tester).read_byte(&c);
+          char ch = static_cast<char>(c);
+
+          //ESP_LOGI("UART", "RX external char: 0x%02X", c);
+
+          switch (ch) {
+            case 't': {
+              if (id(midu_guest_bedroom_temp).has_state()) {
+                char buf[64];
+                snprintf(buf, sizeof(buf),
+                         "Temperature: %.2f C\r\n",
+                         id(midu_guest_bedroom_temp).state);
+                id(serial_tester).write_str(buf);
+              } else {
+                id(serial_tester).write_str("Temperature not available\r\n");
+              }
+              break;
+            }
+
+            case 'h': {
+              if (id(midu_guest_bedroom_humidity).has_state()) {
+                char buf[64];
+                snprintf(buf, sizeof(buf),
+                         "Humidity: %.2f %%\r\n",
+                         id(midu_guest_bedroom_humidity).state);
+                id(serial_tester).write_str(buf);
+              } else {
+                id(serial_tester).write_str("Humidity not available\r\n");
+              }
+              break;
+            }
+
+            case '\r':
+            case '\n':
+              // Ignore line endings
+              break;
+
+            default: {
+              char buf[48];
+              snprintf(buf, sizeof(buf),
+                       "\r\nInvalid command: %c\r\n",
+                       isprint(ch) ? ch : '?');
+              id(serial_tester).write_str(buf);
+              break;
+            }
+          }
+
+uart:
+  id: serial_tester
+  tx_pin: GPIO02
+  rx_pin: GPIO01
+  baud_rate: 9600
+  parity: NONE
+  stop_bits: 1
+
+i2c:
+  - id: bus_a
+    sda: GPIO21                 # This is the default
+    scl: GPIO22                 # This is the default
+    sda_pullup_enabled: false   # The board has physical pullup
+    scl_pullup_enabled: false   # The board has physical pullup
+    scan: true
+
+sensor:
+  - platform: htu21d
+    model: HTU21D
+    #id: midu_guest_bedroom_temp
+    temperature:
+      id: midu_guest_bedroom_temp
+      #name: "Test Temperature"
+    humidity:
+      id: midu_guest_bedroom_humidity
+      #name: "Test Humidity"
+    update_interval: 60s
+    address: 0x40
+
