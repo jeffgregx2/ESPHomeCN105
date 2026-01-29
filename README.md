@@ -4,11 +4,12 @@
 This project is inspired by the work done by [@echavet](https://github.com/echavet/MitsubishiCN105ESPHome) and [@GeoffDavis](https://github.com/geoffdavis/esphome-mitsubishiheatpump) (and others) reverse engineering the CN105 serial protocol for the Mitsubishi Split-Mini heat pumps.  Their work allows for complete control of those units via ESPHome instead of the Kumo Cloud offering from Mitsubishi.  One can argue that the ESPHome offering is superior including the ability to have complete control over important logic such as room temperature settings, etc.
 
 ## Quick Links
-Setting up ESPHome/Home Assistant - [Configuration](/home_assistant/)</br>
-Pre-made Hardware - [ETSY]() (Coming Soon)</br>
-Building the Hardware - DIY/PCBWay:  
- - [PAC-USWHS002-WF-1 Compatible module](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_Microcontroller_kicad_pcb_b5b72995.html)
- - [PAC-USWHS002-WF-2 Compatible module](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_Microcontroller_PAC_USWHS002_WF_2_plug_compatible_8670e686.html)
+
+ - Setting up ESPHome/Home Assistant - [Configuration](/home_assistant/)
+ - Pre-made Hardware - [ETSY]() (Coming Soon) 
+ - Building the Hardware - DIY/PCBWay:  
+    - [PAC-USWHS002-WF-1 Compatible module](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_Microcontroller_kicad_pcb_b5b72995.html)
+    - [PAC-USWHS002-WF-2 Compatible module](https://www.pcbway.com/project/shareproject/Mitsubishi_ESPHome_CN105_Microcontroller_PAC_USWHS002_WF_2_plug_compatible_8670e686.html)
 
 ## Hardware
 In order to use the ESPHome approach, appropriate hardware needs to be assembled and installed in (or next to) each split-mini to be controlled.  Most take DevKits and breadboards or otherwise construct controllers to be installed.  However I wanted something more production ready that was plug compatible with the Mitsubishi PAC-USWHS002-WF-1 and PAC-USWHS002-WF-2 wifi modules and had the exact same footprint allowing easy swapping between modules.
