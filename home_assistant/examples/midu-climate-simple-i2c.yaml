@@ -38,16 +38,13 @@ web_server: !remove
 # Define and enable i2c sensors.  The sensors are connected to the STEMMA connector
 # on the controller board.
 #
-external_components:
-  - source: github://btomala/esphome-LM75@v1
-    components: [ lm75 ]
-
 sensor:
-  - platform: lm75
+  - platform: htu21d
+    model: HTU21D
     id: midu_guest_bedroom_temp
     name: "Internal Temperature"
     update_interval: 60s
-    address: 0x37
+    address: 0x40
     on_value:
       then:
         # We must publish the current temp to rt_effective_temp to take effect

@@ -87,6 +87,10 @@ substitutions:
   wifi_gateway:   192.168.120.1
   wifi_subnet:    255.255.255.0
 
+  # WiFi Fallback information
+  wifi_ap_fallback_ssid: cn105-tester
+  wifi_ap_fallback_password: cn105-tester
+
 esphome:
   name: cn105-tester
   friendly_name: CN105-Tester
@@ -131,6 +135,16 @@ wifi:
     gateway: 192.168.120.1
     subnet: 255.255.255.0
 
+  ap:
+    ssid: ${wifi_ap_fallback_ssid}
+    password: ${wifi_ap_fallback_password}
+
+web_server:
+  include_internal: true
+
+captive_portal:
+
+# Actual code to perform tests
 interval:
   - interval: 50ms
     then:
@@ -239,4 +253,3 @@ sensor:
       #name: "Test Humidity"
     update_interval: 60s
     address: 0x40
-
