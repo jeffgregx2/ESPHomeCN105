@@ -7,31 +7,31 @@
 # This package requires the following substitutions to be defined:
 #
 #  - Identification
-#        name                    -> ESPHome name 
-#        hp_name                 -> Climate name to use
-#        hp_id                   -> Climate device ID - default hp_id
-#        hp_F_compatibility      -> Use internal table for better temp compatibility - default true
-#        hp_update_interval      -> Interval between updates - split mini dependent - default 1.5s
+#        name                     -> ESPHome name 
+#        hp_name                  -> Climate name to use
+#        hp_id                    -> Climate device ID - default hp_id
+#        hp_F_compatibility       -> Use internal table for better temp compatibility - default standard
+#        hp_update_interval       -> Interval between updates - split mini dependent - default 1.5s
 #
 #  - Device Setup
-#        cn105_tx_pin            -> TX pin number for CN105 UART - default GPIO1
-#        cn105_rx_pin            -> RX pin number for CN105 UART - default GPIO2
-#        i2c_scl_pin             -> SCL pin number for i2c bus   - default GPIO22
-#        i2c_sda_pin             -> SDA pin number for i2c bus   - default GPIO21
-#        i2c_scan_bus            -> boolean to scan bus or not.  - default false
-#        status_light_ctrl_pin   -> Pin number for RMT LED Strip - default GPIO8
-#        status_light_brightness -> Whole number percentage (0-100) for led brightness - default 25
+#        cn105_tx_pin             -> TX pin number for CN105 UART - default GPIO1
+#        cn105_rx_pin             -> RX pin number for CN105 UART - default GPIO2
+#        i2c_scl_pin              -> SCL pin number for i2c bus   - default GPIO22
+#        i2c_sda_pin              -> SDA pin number for i2c bus   - default GPIO21
+#        i2c_scan_bus             -> boolean to scan bus or not.  - default false
+#        status_light_ctrl_pin    -> Pin number for RMT LED Strip - default GPIO8
+#        status_light_brightness  -> Whole number percentage (0-100) for led brightness - default 25
 #
 #  - Controlling constants
-#        rts_refresh_timeout.   -> number of seconds with no update to trigger rta refresh
+#        rts_refresh_timeout      -> number of seconds with no update to trigger rta refresh
 #  - Scripts
-#        reevaluate_remote_temp. -> Script to recalculate remote temperature.  Needed on MODE change.
+#        reevaluate_remote_temp   -> Script to recalculate remote temperature.  Needed on MODE change.
 
 substitutions:
   # Climate Device ID & control settings
   hp_id: hp_id
   hp_name: None
-  hp_F_compatibility: true
+  hp_F_compatibility: standard
   hp_update_interval: 1.5s
   
   # HP Uart GPIO pin selection
@@ -51,10 +51,12 @@ substitutions:
 # Retrieve mitsubishi components
 external_components:
   - source: github://echavet/MitsubishiCN105ESPHome
+  #- source: github://GioMez/MitsubishiCN105ESPHome
 
 # Setup boot initialization
 esphome:
   on_boot: 
+    priority: 100
     then:
       # Initialize the status light - red means not initialized
       - light.turn_on:
@@ -96,7 +98,9 @@ light:
     id: status_led
     name: "Status Led"
     internal: true
-    pin: ${status_light_ctrl_pin}
+    pin:
+      number: ${status_light_ctrl_pin}
+      ignore_strapping_warning: true
     num_leds: 1
     rgb_order: RGB
     chipset: WS2812
@@ -260,7 +264,7 @@ climate:
         current_temperature: 0.5
     # Fahrenheit compatibility mode - uses Mitsubishi's "custom" unit conversions, set to
     # "true" for better support of Fahrenheit units in HomeAssistant
-    fahrenheit_compatibility: ${hp_F_compatibility}
+    fahrenheit_compatibility: "${hp_F_compatibility}"
     # Timeout and communication settings
     remote_temperature_timeout: 60min
     update_interval: ${hp_update_interval}
