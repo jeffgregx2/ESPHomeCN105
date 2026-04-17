@@ -98,7 +98,9 @@ light:
     id: status_led
     name: "Status Led"
     internal: true
-    pin: ${status_light_ctrl_pin}
+    pin:
+      number: ${status_light_ctrl_pin}
+      ignore_strapping_warning: true
     num_leds: 1
     rgb_order: RGB
     chipset: WS2812
