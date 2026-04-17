@@ -77,6 +77,41 @@
 #      where CMD is the letter you type on the keyboard.  Only the header is printed until you manually enter a CMD.
 #      Any other command entered will display a message about unknown command.
 #
+#  ------------------------- FIRMWARE UPDATE AFTER TEST -------------------------
+#
+#  There are two way to re-flash the after testing.  In both situations you need a Yaml file that contains  
+#  sufficient configuration to boot the device on your WiFi network and then can be used to upload the final CN105
+#  firmware.  The easiest way to do this is to use the ESPHome Builder -> "+ New Device" button to generate a 
+#  default configuration.  This will be sufficient to bring the device on-line in order to then upgrade to the 
+#  CN105 firmware.  More importantly, this will also generate the API key and OTA Password which are needed to
+#  connect to Home Assistant and support Over-The-Air updating of the firmware.  It is beyond the scope of this
+#  document to show how to generate these two items using other tools.
+#
+#  To update the device from Test firmware to final CN105 firmware you need to do the following steps:
+#
+#    1.  Using Chrome (the browser must support serial device attachment which most do not), navigate to 
+#        ESPHome Builder running within Home Assistant.  If you haven't setup ESPHome Builder within Home
+#        Assistant you'll need to go and do that now (this is outside of the scope of this document).
+#    2.  Add a new device via ESPHome Builder -> "+ New Device", select "New Device Setup" and enter an 
+#        appropriate name.  Typically this would be some kind of room designation - I preface it with "midu-"
+#        which denotes it is a Mitsubishi Electric Indoor Unit (this designation is from Mitsubishi).  For
+#        example:  "midu-guest-bedroom" to denote it is a Mitsubishi Electric Indoor Unit in the guest bedroom.
+#    3.  You will now be prompted to connect the hardware - press "SKIP THIS STEP" - we will connec the hardware
+#        at a later point in time.
+#    4.  Select "ESP32-C6" which is the CPU type in the microcontroller.  You will be shown the Encryption Key, press
+#        SKIP - the key will be stored in the configuration file.
+#
+#  At this point you have a basic configuration that contains all of the generated passwords and keys you
+#  will need.  We can now copy all of this information into the ESPBuilder SECRETS as follows:
+#
+#    1.  Press the EDIT button on the device you just created (it should show as OFFLINE).
+#    2.  Using a seperate window, select SECRETS in ESPHome Builder.  You will need to add the following
+#        key/values to SECRETS (this assumes you don't already have some of these):
+#           wifi_iot_ssid: "<the WiFi SSID you want the device to use>"
+#           wifi_iot_password: "<the WiFi password>"
+#           api_key_<midu-name>: "<api_key from #1>"
+#           ota_key_<midu-name>: "<ota_password from #1>"
+
 substitutions:
   wifi_ssid:     !secret wifi_iot_ssid
   wifi_password: !secret wifi_iot_password

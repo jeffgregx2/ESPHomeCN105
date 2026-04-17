@@ -94,6 +94,7 @@ logger:
     CYCLE: WARN
     Decoder : WARN
     EVT_SETS : WARN
+    FUNCTIONS: WARN
     Header : WARN
     light: WARN
     MQTT : WARN
@@ -107,3 +108,4 @@ logger:
     WIFI : DEBUG
     WRITE : WARN
     WRITE_SETTINGS : WARN
+    
