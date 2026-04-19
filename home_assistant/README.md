@@ -49,10 +49,10 @@ In the simplest of cases, you can define a climate device with no remote sensors
 # replacement for Mitsubishi Kumo Cloud Wifi Controller (Model PAC-USWHS002-WF-1/WF-2)
 #
 packages:
-  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_config.yaml@v1.1
-  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_wifi_dynamic.yaml@v1.1
-  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_remote_temp_none.yaml@v1.1
-  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_device_base.yaml@v1.1
+  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_config.yaml@v1.2
+  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_wifi_dynamic.yaml@v1.2
+  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_remote_temp_none.yaml@v1.2
+  - github://jeffgregx2/ESPHomeCN105/home_assistant/common/mitsubishi_cn105_device_base.yaml@v1.2
 
 # The packages have requirements regarding substitutions that need to be answered.
 substitutions:
@@ -80,7 +80,7 @@ substitutions:
  # Disable the web server component
 web_server: !remove
 ```
-Please note the '@v1.1' indicates that you only want version 1.1.  If you are not familiar with Git, this is a "tag" that was created to mark files at a specific point in time with a name (in this case "v1.1").  If you use "@main" then you would be using the latest version available in the repository.  By specifying a specific version you reduce the chances of breaking changes within the include files.  However you might miss an enhancement or a fix needed to maintain compatibility with the ESPHome and Home Assistant requiring manual intervention.
+Please note the '@v1.2' indicates that you only want version 1.2.  If you are not familiar with Git, this is a "tag" that was created to mark files at a specific point in time with a name (in this case "v1.2").  If you use "@main" then you would be using the latest version available in the repository.  By specifying a specific version you reduce the chances of breaking changes within the include files.  However you might miss an enhancement or a fix needed to maintain compatibility with the ESPHome and Home Assistant requiring manual intervention.
 
 ### Local include files
 The only changes necessary to move to a local directory are in the packages definition:
