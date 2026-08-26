@@ -102,7 +102,7 @@ light:
       number: ${status_light_ctrl_pin}
       ignore_strapping_warning: true
     num_leds: 1
-    rgb_order: RGB
+    channel_colors: RGB
     chipset: WS2812
     default_transition_length: 0ms
     effects:
@@ -164,7 +164,7 @@ sensor:
     entity_category: DIAGNOSTIC
     accuracy_decimals: 0
     lambda: |-
-      return (bool) id(${hp_id}).isUARTConnected_;
+      return (bool) id(${hp_id}).isUARTReady_();
     update_interval: 30s
     on_value:
       then:
